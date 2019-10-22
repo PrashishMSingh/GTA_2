@@ -4,6 +4,7 @@ class Person extends Model{
         this.velocity = velocity,
         this.buffer = []
         this.friction = 0.80
+        this.currentQuadrant = 0
     }
 
     move = () =>{

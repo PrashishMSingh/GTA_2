@@ -9,25 +9,13 @@ class Quadrant{
             fence : [],
             path : []
         }
-
-    }
-
-    rotate = (angle, drawImage) =>{
-        this.context.save()
-        this.context.translate(this.canvas.width/ 2, this.canvas.height/2)
-        this.context.rotate((Math.PI /180) *angle)
-        drawImage()
-        this.context.restore()
+        
     }
 
     setParams = (model, data) =>{
         Object.keys(data).map(key =>{
             model[key] = data[key]
         })
-    }
-
-    checkCollision = () =>{
-        
     }
 
     drawObjects = (key) => {
@@ -38,9 +26,7 @@ class Quadrant{
                     var model = new Building()
                     this.setParams(model,data)
                     model.context = this.context;
-                    model.draw('blue')
                     model.createFloor(this.player)
-
                     this.content[key].push(model)
                 })
                 break;
@@ -50,7 +36,6 @@ class Quadrant{
                     var model = new Fence()
                     this.setParams(model,data)
                     model.context = this.context;
-                    model.draw('grey')
                     this.content[key].push(model)
                 })
                 break;
@@ -59,7 +44,6 @@ class Quadrant{
                     var model = new Path()
                     this.setParams(model,data)
                     model.context = this.context;
-                    model.draw('yellow')
                     this.content[key].push(model)
                 })
                 break;
@@ -70,6 +54,7 @@ class Quadrant{
         Object.keys(this.data).map(key =>{
             this.drawObjects(key)
         })
+        return this.content
     }
 
 }

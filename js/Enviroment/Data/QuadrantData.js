@@ -2,32 +2,6 @@ let quadrantData = [
     // First
     [
         {
-            building :[
-                {
-                    x : 0,
-                    y: 0,
-                    height: 200,
-                    width : 160,
-                    floors: 3,
-                    face : 'right'
-                },
-                {
-                    x : 440,
-                    y : 0,
-                    height : 160,
-                    width : 640,
-                    floors: 2,
-                    face : 'down'
-                },
-                {
-                    x : 440,
-                    y : 440,
-                    height : 800,
-                    width : 320,
-                    floors: 3,
-                    face : 'left'
-                }
-            ],
             fence : [
                 {
                     x: 120,
@@ -146,22 +120,37 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false
                 },
+            ],
+            building :[
+                {
+                    x : 0,
+                    y: 0,
+                    height: 200,
+                    width : 160,
+                    floors: 3,
+                    face : 'right'
+                },
+                {
+                    x : 440,
+                    y : 0,
+                    height : 160,
+                    width : 640,
+                    floors: 2,
+                    face : 'down'
+                },
+                {
+                    x : 440,
+                    y : 440,
+                    height : 800,
+                    width : 320,
+                    floors: 3,
+                    face : 'left'
+                }
             ]
             
         },
 
         {
-            building :[
-                
-                {
-                    x : 1040,
-                    y : 440,
-                    height : 800,
-                    width : 160,
-                    floors: 1,
-                    face : 'left'
-                }
-            ],
             fence : [
                 {
                     x: 1080,
@@ -280,7 +269,18 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false
                 },
-            ]            
+            ],
+            building :[
+                
+                {
+                    x : 1040,
+                    y : 440,
+                    height : 800,
+                    width : 160,
+                    floors: 1,
+                    face : 'left'
+                }
+            ]
         },
         {},
         {},
@@ -294,17 +294,6 @@ let quadrantData = [
 
     [
         {
-            building :[
-                {
-                    x : 0,
-                    y: 600,
-                    height: 640,
-                    width : 160,
-                    floors: 2,
-                    face : 'right'
-                },
-                
-            ],
 
             path : [
                 {
@@ -336,14 +325,23 @@ let quadrantData = [
                     isRightJunction : true,
                     isLeftJunction : false
                 },
+            ],
+            building :[
+                {
+                    x : 0,
+                    y: 600,
+                    height: 640,
+                    width : 160,
+                    floors: 2,
+                    face : 'right'
+                },
+                
             ]
             
         },
 
         {
-            building :[
-            ],
-
+           
             path : [
                 {
                     x : 760,

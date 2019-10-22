@@ -10,7 +10,13 @@ class Enviroment{
         if(!currentIndex){
             this.currentIndex = enviromentData.initialQuadrant
         }        
+        this.quadrantDataList = []
         this.quadrantList = []
+        this.content = {
+            building : [],
+            fence : [],
+            path : []
+        }
         this.playerVelocity = 3.5
         this.init()
     }
@@ -21,11 +27,98 @@ class Enviroment{
         this.createEnviroment()
         this.createQuadrant()
         this.initiateEventListener()
-        
         this.top = 0
         this.left = 0
-        
     }
+
+    getQuadrantIndex = () =>{
+        let col = 0;
+        let row = 0
+        for(var i = 0; i< this.quadrantList.length; i++){
+            if(this.player.x >SCREEN_WIDTH * i && this.player.x < SCREEN_WIDTH * (i + 1)){
+                col = i;
+            }   
+            if(this.player.y > SCREEN_HEIGHT * i && this.player.y < SCREEN_HEIGHT * (i + 1)){
+                row = i
+            }
+        }
+        
+        return {row : row, col : col}
+    }
+
+    getCollidedPlace = (item) =>{
+        let collisionPlace;
+        let minDiff = item.width;
+        var leftDiff =   item.x + item.width -this.player.x
+        var rightDiff = (this.player.x + this.player.width) - item.x
+        var bottomDiff = (this.player.y + this.player.height) - item.y
+        var topDiff = (item.y + item.height) - this.player.y 
+
+
+        if( leftDiff < minDiff){
+          minDiff = leftDiff
+          collisionPlace = 'left'
+        }
+
+        if(rightDiff < minDiff){
+          collisionPlace = 'right'
+          minDiff = rightDiff
+        }
+
+        if(bottomDiff < minDiff){
+          collisionPlace = 'bottom'
+          minDiff = bottomDiff
+
+        }
+        if(topDiff < minDiff){
+          collisionPlace = 'top'
+          minDiff = topDiff
+        }
+        return collisionPlace   
+    }
+
+    checkCollision = (item) =>{
+        let rightCollision = this.player.x + this.player.width > item.x
+        let leftCollision = this.player.x < item.x + item.width
+        let topCollision = this.player.y + this.player.height > item.y
+        let bottomCollision = this.player.y <  item.y + item.height
+        
+        if(rightCollision && leftCollision && topCollision && bottomCollision){
+            switch(this.getCollidedPlace(item)){
+                case 'top':
+                    this.player.y = item.y + item.height
+                    break;
+                case 'right':
+                    this.player.x = item.x -this.player.width
+                    break;
+                case 'bottom':
+                    this.player.y = item.y - this.player.height
+                    break;
+                case 'left':
+                    this.player.x = item.x + item.width
+                    break;
+            }
+            return true
+        }
+        return false;
+
+    }
+
+    hasCollided = () =>{
+        let collided = false
+        Object.keys(this.content).map(key =>{
+            this.content[key].map(item =>{
+                if(key ==='building' || key == 'fence'){
+                    if(this.checkCollision(item)){
+                        collided = true
+                    }
+                }
+            })
+        })
+        return collided
+    }
+
+    
 
     move = () =>{
         if(this.player.x + this.left > SCREEN_WIDTH/2 && -this.left < this.canvas.width - SCREEN_WIDTH){
@@ -42,11 +135,28 @@ class Enviroment{
         if(this.player.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
             this.left  += this.player.friction * this.player.velocity   
         }
+            
+        
     }
 
     draw = () =>{
         this.canvas.style.top = this.top + 'px'
         this.canvas.style.left = this.left + 'px'
+
+        let color = {
+            // building : 'blue',
+            fence : 'yellow',
+            path : 'grey'
+        }
+
+        Object.keys(this.content).map(key =>{
+            this.content[key].map(item =>{
+                if(key === 'building'){
+                    item.floorList.map(flat => flat.changePrespective(this.player))
+                }
+                item.draw(color[key])
+                })
+        })
     }
 
     addPlayer = () =>{
@@ -112,32 +222,42 @@ class Enviroment{
             for(let col = 0; col < this.colCount; col ++){
                vQuadrant.push(quadrantData[row][col]) 
             }
-            this.quadrantList.push(vQuadrant)            
+            this.quadrantDataList.push(vQuadrant)            
         }
+    }
+
+    updateContent = (content, i, j) =>{
+        Object.keys(content).map(key =>{
+            this.content[key] = this.content[key].concat(content[key])
+        })
         
     }
 
     createQuadrant = () =>{
-
-        // let quadrant = new Quadrant(this.canvas, this.context, quadrantData[0][0], this.player)
-        //         quadrant.create()
-        this.quadrantList.map(quadrantData =>{
-            quadrantData.map(data =>{
+        this.quadrantDataList.map((quadrantData, i) =>{
+            let tempList = []
+            quadrantData.map((data, j) =>{
                 let quadrant = new Quadrant(this.canvas, this.context, data, this.player)
-                quadrant.create()
-                
+                this.updateContent(quadrant.create(), i, j)
+                tempList.push(quadrant)
             })
+            this.quadrantList.push(tempList)
         })
+        
     }
 
     update = () =>{
         this.context.clearRect(0, 0, SCREEN_WIDTH * this.rowCount, SCREEN_HEIGHT * this.colCount)
-        this.createQuadrant()
-        
-        this.player.move()
-        this.player.draw()
-        
-        this.move()
+        let index = this.getQuadrantIndex()
+        let quadrant = this.quadrantList[index.row][index.col]
+        if(!this.hasCollided()){
+            this.player.move()
+            this.move()
+        }
+
+        // this.createQuadrant()
         this.draw()
+        this.player.draw()
     }    
+
 }

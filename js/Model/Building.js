@@ -9,7 +9,6 @@ class Building extends Model{
     createFloor = (player) =>{
         for(let floor = 0; floor< this.floors; floor++){
             let flat = new Flat(this.context, this.x, this.y, this.width, this.height, floor, this.face)
-            flat.changePrespective(player)
             this.floorList.push(flat)
         }
     }
