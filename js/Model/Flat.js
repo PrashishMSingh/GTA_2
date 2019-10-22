@@ -30,10 +30,11 @@ class Flat{
         let x = this.face == 'right' ? this.parentX - (this.xFloorHeight * this.floor) : this.parentX + (this.xFloorHeight * this.floor)
         let y = this.parentY - (this.yFloorHeight * (this.floor))
 
-        this.leftSideBoxData = {
+        this.frontSideData = {
             x: this.face == 'right' ? x + this.parentWidth : x ,
             y : y
         }
+
 
         this.rightSideBoxData = {
             x: x,
@@ -45,10 +46,13 @@ class Flat{
             y : y - this.yFloorHeight
         }
 
-        this.bottomSideData = {
+        this.backSideBoxData = {
             x : x,
             y : y
-
+        }
+        this.leftSideBoxData = {
+            x : x + this.parentWidth,
+            y : y
         }
 
         switch(this.floor){
@@ -66,18 +70,18 @@ class Flat{
         
         switch(this.face){
             case 'right':
-                xGap = (player.x - this.parentX - this.parentWidth)* this.gameFriction;
+                xGap = (player.x - this.parentX - this.parentWidth/2 )* this.gameFriction;
                 yGap = (player.y - this.parentY ) * this.gameFriction;
                 break;
             
             case 'left':
-                xGap = (this.parentX - player.x - player.width) * this.gameFriction
+                xGap = (this.parentX + this.parentWidth/2 - player.x ) * this.gameFriction
                 yGap = (player.y + player.height - this.parentY) * this.gameFriction;
                 break;
 
             case 'down':
-                xGap = (this.parentX - player.x - player.width)* this.gameFriction;
-                yGap = (player.y - this.parentY ) * this.gameFriction;
+                xGap = (this.parentX - player.x )* this.gameFriction;
+                yGap = (player.y - player.width - this.parentY ) * this.gameFriction;
                 break;
             case 'up':
                 break;
@@ -86,10 +90,7 @@ class Flat{
         if(yGap > this.maxFloorHeight){
             this.yFloorHeight = this.maxFloorHeight
         }
-        else if(yGap < this.minFloorHeight && yGap > 0){
-            
-            this.yFloorHeight = this.minFloorHeight
-        }else if(yGap < -this.maxFloorHeight){
+        else if(yGap < -this.maxFloorHeight){
             this.yFloorHeight = -this.maxFloorHeight
         }
         else{
@@ -100,9 +101,7 @@ class Flat{
             this.xFloorHeight = this.maxFloorHeight
         }
         
-        else if(xGap < this.minFloorHeight && xGap > 0){
-            this.xFloorHeight = this.minFloorHeight
-        }
+        
         else if(xGap < -this.maxFloorHeight){
             this.xFloorHeight = -this.maxFloorHeight
         }
@@ -111,7 +110,7 @@ class Flat{
         }
         
         this.create()        
-        this.draw()
+        this.draw(player)
     }
 
     changeFloorHeight = (xFloorHeight, yFloorHeight) =>{
@@ -134,22 +133,6 @@ class Flat{
         this.context.lineTo(tempX, y + this.parentHeight - this.yFloorHeight)
     }
 
-    drawLPoints = (tempX, x, y) =>{
-        // top point
-        this.context.lineTo(tempX, y - this.yFloorHeight)
-            
-        // left point
-        this.context.lineTo(tempX + this.parentWidth , y - this.yFloorHeight)
-        
-        // bottom point
-        this.context.lineTo(x + this.parentWidth, y)
-
-        // right point
-        this.context.lineTo(x, y)
-        
-        this.context.closePath()
-    }
-
     drawRPoints = (tempX, x, y) =>{
         // top point
         this.context.lineTo(tempX, y - this.yFloorHeight)
@@ -166,18 +149,36 @@ class Flat{
         this.context.closePath()
     }
 
+    drawLPoints = (tempX, x, y) =>{
+        // top point
+        this.context.lineTo(tempX, y - this.yFloorHeight)
+            
+        // left point
+        this.context.lineTo(x , y)
+
+        // bottom point
+        this.context.lineTo(x , y + this.parentHeight)
+
+        // right point
+        this.context.lineTo(tempX, y + this.parentHeight - this.yFloorHeight)
+
+        
+        
+        this.context.closePath()
+    }
+
     drawBPoints = (tempX, x, y) =>{
         // top point
         this.context.lineTo(x, y)
             
-        // left point
+        // top right point
         this.context.lineTo(x + this.parentWidth ,y )
         
-        // right point
-        this.context.lineTo(x + this.xFloorHeight + this.parentWidth, y - this.yFloorHeight )
-
-        // bottom point
-        this.context.lineTo(x + this.xFloorHeight, y - this.yFloorHeight)
+        // bottom right point
+        this.context.lineTo(tempX + this.parentWidth, y - this.yFloorHeight )
+        
+        // bottom left 
+        this.context.lineTo(tempX , y - this.yFloorHeight)
         
         this.context.closePath()
     }
@@ -200,27 +201,39 @@ class Flat{
         this.context.beginPath()
         let tempX =  this.face === 'right'? x - this.xFloorHeight : x + this.xFloorHeight
         switch(orientation){
-            case 'horizontal':
-                if(this.face === 'down'){
-                    this.drawLPoints(tempX, x, y + this.parentHeight)
-                }else{
-                    this.drawFPoints(tempX, x, y)
-                }
-                break;
-            case 'vertical':
-                if(this.face === 'down'){
-                    this.drawFPoints(tempX, x, y - this.parentHeight)
+            case 'front':
+                this.drawFPoints(tempX, x, y)
+                // if(this.face === 'down'){
+                //     this.drawRPoints(tempX, x, y + this.parentHeight)
+                // }else{
                     
-                }else{
-                    this.drawLPoints(tempX, x, y)
-                }
+                // }
+                break;
+            case 'right':
+                this.drawRPoints(tempX, x, y)
+                // if(this.face === 'down'){
+                //     this.drawFPoints(tempX, x, y - this.parentHeight)
+                    
+                // }else{
+                    
+                // }
                 break;
             case 'top':
                 this.drawTPoints(tempX, x, y)
                 break;
             
             case 'back':
+                
                 this.drawBPoints(tempX, x, y)
+                break;
+
+            case 'left':
+                if(this.face == 'right'){
+                    this.drawFPoints(tempX, x, y)
+                }else{
+                    this.drawLPoints(tempX, x, y)
+                }
+                
                 break;
         }
 
@@ -231,13 +244,27 @@ class Flat{
     }
 
 
-    draw = () =>{
-        if(this.floor < 1){
-            this.drawPoints('grey', this.rightSideBoxData.x, this.rightSideBoxData.y, 'vertical')   
-            this.drawPoints('blue', this.leftSideBoxData.x, this.leftSideBoxData.y, 'horizontal') 
-            this.drawPoints('orange', this.topSideBoxData.x, this.topSideBoxData.y, 'top')                 
-            this.drawPoints('yellow', this.bottomSideData.x, this.bottomSideData.y, 'back')                 
+    draw = (player) =>{
+        if(player && this.floor <1){
+            if(player.y + player.height > this.parentY && (player.x +player.width < this.parentX || player.y + player.height > this.parentY)){
+                this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back')  
+                this.drawPoints('#137FDF', this.leftSideBoxData.x, this.leftSideBoxData.y, 'left')                 
+                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front') 
+                this.drawPoints('#2356B5', this.rightSideBoxData.x, this.rightSideBoxData.y, 'right')   
+                this.drawPoints('grey', this.topSideBoxData.x, this.topSideBoxData.y, 'top')    
+            }
+            else{
+                       
+                this.drawPoints('#2356B5', this.rightSideBoxData.x, this.rightSideBoxData.y, 'right')
+                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front')      
+                this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back') 
+                
+                this.drawPoints('#137FDF', this.leftSideBoxData.x, this.leftSideBoxData.y, 'left')    
+                this.drawPoints('grey', this.topSideBoxData.x, this.topSideBoxData.y, 'top')    
+            }            
         }
+        
+        
         
     }
 }

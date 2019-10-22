@@ -156,7 +156,7 @@ let quadrantData = [
                 {
                     x : 1040,
                     y : 440,
-                    height : 160,
+                    height : 800,
                     width : 160,
                     floors: 1,
                     face : 'left'
@@ -342,33 +342,6 @@ let quadrantData = [
 
         {
             building :[
-
-                {
-                    x : 1040,
-                    y : 600,
-                    height : 160,
-                    width : 160,
-                    floors: 1,
-                    face : 'left'
-                },
-                {
-                    x : 1040,
-                    y : 760,
-                    height : 280,
-                    width : 160,
-                    floors: 1,
-                    face : 'left'
-                },
-                {
-                    x : 1040,
-                    y : 1040,
-                    height : 160,
-                    width : 160,
-                    floors: 1,
-                    face : 'left'
-                }
-
-
             ],
 
             path : [

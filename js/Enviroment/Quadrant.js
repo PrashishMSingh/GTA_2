@@ -26,6 +26,10 @@ class Quadrant{
         })
     }
 
+    checkCollision = () =>{
+        
+    }
+
     drawObjects = (key) => {
         var objects = this.data[key]
         switch(key){
