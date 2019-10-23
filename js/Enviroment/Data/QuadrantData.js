@@ -84,7 +84,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -95,7 +95,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -106,7 +106,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
 
                 },
                 {
@@ -118,7 +118,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -129,7 +129,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -140,7 +140,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -151,7 +151,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -162,7 +162,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -173,7 +173,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -184,7 +184,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 160,
@@ -195,19 +195,104 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation : 'vertical',
-                    face : 'right'
+                    side : 'right'
                 },
                 
 
                 {
-                    x : 220,
-                    y : 0,
-                    height : 220,
-                    width : 160,
+                    x : 220 + 80 * 0,
+                    y : 0 + 55 * 0,
+                    height : 55,
+                    width : 80,
                     isRoad : true,
                     isRightJunction : false,
                     isLeftJunction : false,
-                    orientation: 'vertical'
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 0,
+                    y : 0 + 55 * 1,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 0,
+                    y : 0 + 55 * 2,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 0,
+                    y : 0 + 55 * 3,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 1,
+                    y : 0 + 55 * 0,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 1,
+                    y : 0 + 55 * 1,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 1,
+                    y : 0 + 55 * 2,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
+                {
+                    x : 220 + 80 * 1,
+                    y : 0 + 55 * 3,
+                    height : 55,
+                    width : 80,
+                    isRoad : true,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
                 },
 
                 {
@@ -218,7 +303,8 @@ let quadrantData = [
                     isRoad : true,
                     isRightJunction : true,
                     isLeftJunction : false,
-                    orientation: 'left'
+                    orientation: 'vertical',
+                    side : 'left'
                 },
 
                 {
@@ -229,7 +315,8 @@ let quadrantData = [
                     isRoad : true,
                     isRightJunction : false,
                     isLeftJunction : false,
-                    orientation: 'left'
+                    orientation: 'vertical',
+                    side : 'left'
                 },
 
                 {
@@ -241,7 +328,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face : 'left'
+                    side : 'left'
                 },
                 {
                     x : 380,
@@ -252,7 +339,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face : 'left'
+                    side : 'left'
                 },
                 {
                     x : 380,
@@ -263,7 +350,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face : 'left'
+                    side : 'left'
                 },
 
                 {
@@ -275,7 +362,7 @@ let quadrantData = [
                     isRightJunction : true,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face : 'left'
+                    side : 'left'
                 },
                 
                 {
@@ -334,7 +421,7 @@ let quadrantData = [
                     isRightJunction : true,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
@@ -346,7 +433,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
@@ -358,7 +445,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
@@ -370,7 +457,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
@@ -382,7 +469,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 380,
@@ -393,7 +480,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 380,
@@ -404,7 +491,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'vertical',
-                    face: 'left'
+                    side: 'left'
                 },
             ],
             building :[
@@ -414,7 +501,7 @@ let quadrantData = [
                     height: 200,
                     width : 160,
                     floors: 3,
-                    face : 'right'
+                    side : 'right'
                 },
                 {
                     x : 440,
@@ -422,7 +509,7 @@ let quadrantData = [
                     height : 160,
                     width : 640,
                     floors: 2,
-                    face : 'down'
+                    side : 'down'
                 },
                 {
                     x : 440,
@@ -430,7 +517,7 @@ let quadrantData = [
                     height : 800,
                     width : 320,
                     floors: 3,
-                    face : 'left'
+                    side : 'left'
                 }
             ]
             
@@ -472,7 +559,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 1,
@@ -483,7 +570,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 1,
@@ -494,7 +581,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 2,
@@ -505,7 +592,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 3,
@@ -516,7 +603,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 4,
@@ -527,7 +614,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 5,
@@ -538,7 +625,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 6,
@@ -549,7 +636,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 7,
@@ -560,7 +647,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 8,
@@ -571,7 +658,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
                 {
                     x : 600 + 60 * 9,
@@ -582,7 +669,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'left'
+                    side: 'left'
                 },
 
                 {
@@ -633,7 +720,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
@@ -645,7 +732,7 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
@@ -657,9 +744,8 @@ let quadrantData = [
                     isRightJunction : false,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
-
 
                 {
                     x : 760,
@@ -670,17 +756,43 @@ let quadrantData = [
                     isRightJunction : true,
                     isLeftJunction : false,
                     orientation: 'horizontal',
-                    face: 'right'
+                    side: 'right'
                 },
 
                 {
                     x : 760,
                     y : 440,
-                    height : 160,
+                    height : 60,
                     width : 60,
                     isRoad : false,
                     isRightJunction : false,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 440 + 60 * 1,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 440 + 60 * 2,
+                    height : 40,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
                 },
 
                 {
@@ -690,7 +802,8 @@ let quadrantData = [
                     width : 160,
                     isRoad : true,
                     isRightJunction : false,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+
                 },
 
                 {
@@ -700,26 +813,80 @@ let quadrantData = [
                     width : 60,
                     isRoad : false,
                     isRightJunction : true,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+                    orientation: 'horizontal',
+                    side: 'right'
                 },
                 {
                     x : 980,
-                    y : 440,
-                    height : 160,
+                    y : 440 + 60 * 0,
+                    height : 60,
                     width : 60,
                     isRoad : false,
                     isRightJunction : false,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+
+                {
+                    x : 980,
+                    y : 440 + 60 * 1,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+
+                {
+                    x : 980,
+                    y : 440 + 60 * 2,
+                    height : 40,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
                 },
                 
                 {
-                    x : 1040,
+                    x : 1040 + 60 * 0,
                     y : 380,
                     height : 60,
-                    width : 160,
+                    width : 60,
                     isRoad : false,
                     isRightJunction : false,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+                    orientation: 'horizontal',
+                    side: 'right'
+                },
+
+                {
+                    x : 1040 + 60 * 1,
+                    y : 380,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'horizontal',
+                    side: 'right'
+                },
+
+                {
+                    x : 1040 + 60 * 2,
+                    y : 380,
+                    height : 60,
+                    width : 40,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'horizontal',
+                    side: 'right'
                 },
             ],
             building :[
@@ -730,7 +897,7 @@ let quadrantData = [
                     height : 800,
                     width : 160,
                     floors: 1,
-                    face : 'left'
+                    side : 'left'
                 }
             ]
         },
@@ -750,13 +917,116 @@ let quadrantData = [
             path : [
                 {
                     x : 160,
-                    y : 600,
-                    height : 600,
+                    y : 600 + 60 * 0,
+                    height : 60,
                     width : 60,
                     isRoad : false,
                     isRightJunction : false,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
                 },
+                {
+                    x : 160,
+                    y : 600 + 60 * 1,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 2,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 3,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 4,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 5,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 6,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 7,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+                {
+                    x : 160,
+                    y : 600 + 60 * 8,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+
+                {
+                    x : 160,
+                    y : 600 + 60 * 9,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'right'
+                },
+
 
                 {
                     x : 220,
@@ -770,13 +1040,115 @@ let quadrantData = [
 
                 {
                     x : 380,
-                    y : 600,
-                    height : 600,
+                    y : 600 + 60 * 0,
+                    height : 60,
                     width : 60,
                     isRoad : false,
-                    isRightJunction : true,
-                    isLeftJunction : false
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
                 },
+                {
+                    x : 380,
+                    y : 600 + 60 * 1,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 2,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 3,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 4,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 5,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 6,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 7,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 8,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+                {
+                    x : 380,
+                    y : 600 + 60 * 9,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side : 'left'
+                },
+
             ],
             building :[
                 {
@@ -785,7 +1157,7 @@ let quadrantData = [
                     height: 640,
                     width : 160,
                     floors: 2,
-                    face : 'right'
+                    side : 'right'
                 },
                 
             ]
@@ -797,13 +1169,149 @@ let quadrantData = [
             path : [
                 {
                     x : 760,
-                    y : 600,
-                    height : 600,
+                    y : 600 + 60 * 0,
+                    height : 60,
                     width : 60,
                     isRoad : false,
                     isRightJunction : false,
-                    isLeftJunction : false
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
                 },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 0,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 0,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 1,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 2,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 3,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 4,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 5,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 6,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 7,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 8,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                {
+                    x : 760,
+                    y : 600 + 60 * 9,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'right'
+                },
+
+                
 
                 {
                     x : 820,
@@ -817,13 +1325,126 @@ let quadrantData = [
 
                 {
                     x : 980,
-                    y : 600,
-                    height : 600,
+                    y : 600 + 60 * 0,
+                    height : 60,
                     width : 60,
                     isRoad : false,
-                    isRightJunction : true,
-                    isLeftJunction : false
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
                 },
+                {
+                    x : 980,
+                    y : 600 + 60 * 1,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 2,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 3,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 4,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 5,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 6,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 7,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 0,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 8,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+                {
+                    x : 980,
+                    y : 600 + 60 * 9,
+                    height : 60,
+                    width : 60,
+                    isRoad : false,
+                    isRightJunction : false,
+                    isLeftJunction : false,
+                    orientation: 'vertical',
+                    side: 'left'
+                },
+
             ],
         },
         {},

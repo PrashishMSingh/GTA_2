@@ -1,14 +1,14 @@
 const FLOOR_WIDTH = 160
 const TO_RADIANT = Math.PI/180
 class Flat{
-    constructor(context, parentX, parentY, parentWidth, parentHeight, floor, face){   
+    constructor(context, parentX, parentY, parentWidth, parentHeight, floor, side){   
         this.context = context;
         this.parentX = parentX;
         this.parentY = parentY;
         this.parentWidth = parentWidth;
         this.parentHeight = parentHeight;
         this.floor = floor;
-        this.face = face;
+        this.side = side;
         
         this.init()
         this.create()
@@ -27,11 +27,11 @@ class Flat{
     }
 
     create = () =>{
-        let x = this.face == 'right' ? this.parentX - (this.xFloorHeight * this.floor) : this.parentX + (this.xFloorHeight * this.floor)
+        let x = this.side == 'right' ? this.parentX - (this.xFloorHeight * this.floor) : this.parentX + (this.xFloorHeight * this.floor)
         let y = this.parentY - (this.yFloorHeight * (this.floor))
 
         this.frontSideData = {
-            x: this.face == 'right' ? x + this.parentWidth : x ,
+            x: this.side == 'right' ? x + this.parentWidth : x ,
             y : y
         }
 
@@ -68,7 +68,7 @@ class Flat{
         let xGap = -this.xFloorHeight;
         let yGap = -this.yFloorHeight;
         
-        switch(this.face){
+        switch(this.side){
             case 'right':
                 xGap = (player.x - this.parentX - this.parentWidth/2 )* this.gameFriction;
                 yGap = (player.y - this.parentY ) * this.gameFriction;
@@ -199,11 +199,11 @@ class Flat{
 
     drawPoints = (color, x, y, orientation ) =>{
         this.context.beginPath()
-        let tempX =  this.face === 'right'? x - this.xFloorHeight : x + this.xFloorHeight
+        let tempX =  this.side === 'right'? x - this.xFloorHeight : x + this.xFloorHeight
         switch(orientation){
             case 'front':
                 this.drawFPoints(tempX, x, y)
-                // if(this.face === 'down'){
+                // if(this.side === 'down'){
                 //     this.drawRPoints(tempX, x, y + this.parentHeight)
                 // }else{
                     
@@ -211,7 +211,7 @@ class Flat{
                 break;
             case 'right':
                 this.drawRPoints(tempX, x, y)
-                // if(this.face === 'down'){
+                // if(this.side === 'down'){
                 //     this.drawFPoints(tempX, x, y - this.parentHeight)
                     
                 // }else{
@@ -228,7 +228,7 @@ class Flat{
                 break;
 
             case 'left':
-                if(this.face == 'right'){
+                if(this.side == 'right'){
                     this.drawFPoints(tempX, x, y)
                 }else{
                     this.drawLPoints(tempX, x, y)

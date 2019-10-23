@@ -63,29 +63,29 @@ class Model{
             if(this.isRoad){
                 spriteName = 'road'
             }else{
-                spriteName = 'footPath'
+                spriteName = 'footPath'   
+            }
 
-                if(this.orientation === 'vertical'){
-                    spriteName += 'V'
-                }
-                else{
-                    spriteName += 'H'
-                }
+            if(this.orientation === 'vertical'){
+                spriteName += 'V'
+            }
+            else{
+                spriteName += 'H'
+            }
 
-                if(this.face ==="right" ){
-                    spriteName += 'R'
-                }
-                else{
-                    spriteName += 'L'
-                }
+            if(this.side ==="right" ){
+                spriteName += 'R'
+            }
+            else{
+                spriteName += 'L'
+            }
 
-                if(this.isLeftJunction || this.isRightJunction){
-                    if(this.isLeftJunction){
-                        spriteName += '_LJ'
-                        
-                    }else{
-                        spriteName += '_RJ'
-                    }
+            if(this.isLeftJunction || this.isRightJunction){
+                if(this.isLeftJunction){
+                    spriteName += '_LJ'
+                    
+                }else{
+                    spriteName += '_RJ'
                 }
             }
         }
