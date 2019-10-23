@@ -5,8 +5,8 @@ class Game{
     }
 
     createScreen = () =>{
-        this.mainContainer.style.width = SCREEN_WIDTH + 'px'
-        this.mainContainer.style.height = SCREEN_HEIGHT + 'px'
+        // this.mainContainer.style.width = SCREEN_WIDTH + 'px'
+        // this.mainContainer.style.height = SCREEN_HEIGHT + 'px'
         this.canvas = document.createElement('canvas')
         this.context = this.canvas.getContext('2d')
         this.canvas.setAttribute('class', 'game-canvas')

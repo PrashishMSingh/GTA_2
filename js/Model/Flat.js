@@ -35,7 +35,6 @@ class Flat{
             y : y
         }
 
-
         this.rightSideBoxData = {
             x: x,
             y: y + this.parentHeight,
@@ -55,13 +54,6 @@ class Flat{
             y : y
         }
 
-        switch(this.floor){
-            case 1:
-                break;
-            
-            case 2:
-            case 3:
-        }
     }
 
     changePrespective = (player) =>{
@@ -70,19 +62,20 @@ class Flat{
         
         switch(this.side){
             case 'right':
-                xGap = (player.x - this.parentX - this.parentWidth/2 )* this.gameFriction;
-                yGap = (player.y - this.parentY ) * this.gameFriction;
+                xGap = (player.x - this.parentX - this.parentWidth/2 ) * this.gameFriction;
+                yGap = (player.y - this.parentY ) * this.gameFriction ;
                 break;
             
             case 'left':
-                xGap = (this.parentX + this.parentWidth/2 - player.x ) * this.gameFriction
-                yGap = (player.y + player.height - this.parentY) * this.gameFriction;
+                xGap = (this.parentX  + this.parentWidth/2 - player.x - player.width  ) * this.gameFriction
+                yGap = (player.y - this.parentY) * this.gameFriction;
                 break;
 
             case 'down':
-                xGap = (this.parentX - player.x )* this.gameFriction;
+                xGap = (this.parentX - player.x ) * this.gameFriction;
                 yGap = (player.y - player.width - this.parentY ) * this.gameFriction;
                 break;
+
             case 'up':
                 break;
         }
@@ -100,8 +93,6 @@ class Flat{
         if(xGap > this.maxFloorHeight){
             this.xFloorHeight = this.maxFloorHeight
         }
-        
-        
         else if(xGap < -this.maxFloorHeight){
             this.xFloorHeight = -this.maxFloorHeight
         }
@@ -245,21 +236,22 @@ class Flat{
 
 
     draw = (player) =>{
-        if(player && this.floor <1){
+        if(player){
+            // when player goes over the building
             if(player.y + player.height > this.parentY && (player.x +player.width < this.parentX || player.y + player.height > this.parentY)){
                 this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back')  
                 this.drawPoints('#137FDF', this.leftSideBoxData.x, this.leftSideBoxData.y, 'left')                 
-                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front') 
+                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front')
                 this.drawPoints('#2356B5', this.rightSideBoxData.x, this.rightSideBoxData.y, 'right')   
                 this.drawPoints('grey', this.topSideBoxData.x, this.topSideBoxData.y, 'top')    
             }
             else{
                        
                 this.drawPoints('#2356B5', this.rightSideBoxData.x, this.rightSideBoxData.y, 'right')
-                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front')      
-                this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back') 
-                
+                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front')  
+                                
                 this.drawPoints('#137FDF', this.leftSideBoxData.x, this.leftSideBoxData.y, 'left')    
+                this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back') 
                 this.drawPoints('grey', this.topSideBoxData.x, this.topSideBoxData.y, 'top')    
             }            
         }

@@ -1,10 +1,12 @@
 class Person extends Model{
-    constructor(context, x, y, width, height, velocity){
+    constructor(context, x, y, width, height, velocity, isPlayer){
         super(context, x, y, width, height);
         this.velocity = velocity,
         this.buffer = []
         this.friction = 0.80
-        this.currentQuadrant = 0
+        this.currentQuadrant = 0,
+        this.isPlayer = isPlayer,
+        this.isActive = false
     }
 
     move = () =>{

@@ -13,11 +13,11 @@ class Enviroment{
         this.quadrantDataList = []
         this.quadrantList = []
         this.content = {
-            building : [],
             fence : [],
-            path : []
+            path : [],
+            building : []
         }
-        this.playerVelocity = 3.5
+        this.playerVelocity = 1.5
         this.init()
     }
 
@@ -42,7 +42,6 @@ class Enviroment{
                 row = i
             }
         }
-        
         return {row : row, col : col}
     }
 
@@ -135,8 +134,6 @@ class Enviroment{
         if(this.player.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
             this.left  += this.player.friction * this.player.velocity   
         }
-            
-        
     }
 
     draw = () =>{
@@ -165,7 +162,7 @@ class Enviroment{
         let playerHeight = 30
         let playerWidth = 30
         
-        this.player = new Person(this.context, xPos, yPos, playerWidth, playerHeight, this.playerVelocity)   
+        this.player = new Person(this.context, xPos, yPos, playerWidth, playerHeight, this.playerVelocity, true)           
         this.player.draw('red')     
     }
 
@@ -249,7 +246,6 @@ class Enviroment{
     update = () =>{
         this.context.clearRect(0, 0, SCREEN_WIDTH * this.rowCount, SCREEN_HEIGHT * this.colCount)
         let index = this.getQuadrantIndex()
-        let quadrant = this.quadrantList[index.row][index.col]
         if(!this.hasCollided()){
             this.player.move()
             this.move()
