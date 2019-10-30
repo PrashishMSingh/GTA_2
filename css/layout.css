@@ -2,15 +2,65 @@ body{
     background:black
 }
 
-.main-container{
+ul li{
+    float:left;
+}
 
+ul li i{
+    font-size : 14px;
+    line-height: 18px
+}
+
+ul{
+    list-style: none;
+}
+
+.main-container{
     background-color: #383838;
     padding: 30px;
     margin: auto;
     margin-top: 40px;
-    width : 75em;
-    height : 45em;    
-    
+    width : 600px;
+    height : 600px;
+}
+
+.clearFix, ul {
+    display : table;
+    content : '';
+    clear:both;
+}
+
+.player-info{
+    background: #1C2833 ;
+    height : 80px;
+    width : 380px;
+    float : left;
+}
+
+.health-sprint-bar{
+    float : right;
+    width : 300px;
+}
+
+.player-image{
+    float: left;
+    width : 60px;
+    height : 80px;
+    border-radius: 10px;
+}
+
+.health-bar ul, .sprint-bar ul{
+    display : block;
+}
+
+.health-bar, .sprint-bar{
+    width : 260px;
+}
+
+.health-bar ul li i, .sprint-bar ul li i, .pursuit-bar ul li i{
+    line-height : 40px;
+    font-size: 16px;
+    margin : 0 4px
 }
 
 .game-container{
@@ -25,5 +75,23 @@ body{
     position: absolute;
     top:0;
     left: 0
-
 }
+
+.pursuit-money-wrapper{
+    float : right;
+    background : #1C2833 ;
+    width : 160px;
+    padding : 0 20px;
+}
+
+.money-bar:before{
+    content : '$ '
+}
+
+.money-bar {
+    color : #229954;
+    font-size : 16px;
+    line-height : 40px;
+}
+
+

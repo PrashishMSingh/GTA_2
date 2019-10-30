@@ -1,6 +1,6 @@
-let enviromentData = {
+let environmentData = {
     quadrantCount: 64,
-    quadrantrenderRange : 1,
+    quadrantRenderRange : 1,
     rowCount: 8,
     colCount: 8,
     initialQuadrant: [0,0]

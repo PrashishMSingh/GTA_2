@@ -235,7 +235,7 @@ let quadrant2 = {
             x : 600 + 80 * 2,
             y : 220 + 80 * 1,
             height : 80,
-            width : 60,
+            width : 80,
             isRoad : true,
             isRightJunction : false,
             isLeftJunction : false,
@@ -244,7 +244,7 @@ let quadrant2 = {
         },
 
         {
-            x : 600 + 80 * 3 - 20,
+            x : 600 + 80 * 3 ,
             y : 220 + 80 * 1,
             height : 80,
             width : 80,
@@ -256,7 +256,7 @@ let quadrant2 = {
         },
 
         {
-            x : 600 + 80 * 4 - 20,
+            x : 600 + 80 * 4,
             y : 220 + 80 * 1,
             height : 80,
             width : 80,
@@ -368,7 +368,7 @@ let quadrant2 = {
             x : 600 + 60 * 2,
             y : 380,
             height : 60,
-            width : 40,
+            width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
@@ -415,7 +415,7 @@ let quadrant2 = {
         {
             x : 760,
             y : 440 + 60 * 2,
-            height : 40,
+            height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
@@ -425,10 +425,10 @@ let quadrant2 = {
         },
 
         {
-            x : 810 ,
+            x : 810 + 20,
             y : 370 ,
-            height : 60,
-            width : 80,
+            height : 80,
+            width : 60,
             isRoad : true,
             isRightJunction : false,
             isLeftJunction : false,
@@ -479,9 +479,9 @@ let quadrant2 = {
 
         {
             x : 830 + 80 * 1,
-            y : 390 ,
-            height : 60,
-            width : 80,
+            y : 370 ,
+            height : 80,
+            width : 60,
             isRoad : true,
             isRightJunction : false,
             isLeftJunction : false,
@@ -566,7 +566,7 @@ let quadrant2 = {
         {
             x : 980,
             y : 440 + 60 * 2,
-            height : 40,
+            height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
@@ -603,7 +603,7 @@ let quadrant2 = {
             x : 1040 + 60 * 2,
             y : 380,
             height : 60,
-            width : 40,
+            width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
@@ -612,7 +612,6 @@ let quadrant2 = {
         },
     ],
     building :[
-        
         {
             x : 1040,
             y : 440,

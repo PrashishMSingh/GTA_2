@@ -1,73 +1,242 @@
 class Person extends Model{
-    constructor(context, x, y, width, height, velocity, isPlayer){
+    constructor(context, x, y, width, height, velocity, isPlayer, direction, currentPath, healthPoint, isMob, isPolice){
         super(context, x, y, width, height);
         this.velocity = velocity,
         this.buffer = []
-        this.friction = 0.80
-        this.currentQuadrant = 0,
-        this.isPlayer = isPlayer,
-        this.isActive = false
+        this.friction = 0.2,
+        this.pedesterianFriction = 0.01,
+        this.currentQuadrant = 0
+        this.isPlayer = isPlayer
+        this.isActive = true
+        this.isMoving = false
+        this.direction = direction
+        this.currentPath = currentPath
+        this.healthPoint = healthPoint
+        this.updateCollisionPosition =  true
+        this.isMob = isMob
+        this.isPolice = isPolice
+        this.isRunnable = false
+        this.hasPunched = false
+        
+        this.state = {   
+            health : 7,    
+            sprint : 7,
+            money : 100,
+            pursuit : 0,
+            kill : 0
+        }
+        this.resetState()
     }
 
-    move = () =>{
-        let degree;
-        // up
-        if(this.buffer.includes(38)){
-            if(degree){
-                degree += 270
-                degree /= 2
-            }
-            else{
-                degree = 270
-            }
-        }
-        // down
-        if(this.buffer.includes(40)){
-            if(degree){
-                degree += 90
-            }
-            else{
-                degree = 90
-            }
-            degree = 90
+    resetState = () =>{
+        this.playerState = {
+            tick : 0,
+            tickPerFrame : 8,
+            frameIndex : 0,
+            spriteIndex :  [50, 150, 280]
+        },
 
+        this.hitState = {
+            tick : 0,
+            tickPerFrame : 18
         }
 
-        // right
-        if(this.buffer.includes(37)){
-            if(degree){
-                degree += 180
-                degree /= 2
-            }
-            else{
-                degree = 180
-            }
-        }
-
-        // left
-        if(this.buffer.includes(39)){
-            if(degree){
-                if(degree === 270){
-                    degree = (270 + 360)/2
-                }else{
-                    degree += 0
-                    degree /= 2
-                }
-                
-            }
-            else{
-                degree = 0
-            }
-        }
-
-        if(degree || degree == 0){
-            if(this.friction < 2){
-                this.friction += 0.01
-            }
-            
-            this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (this.friction);
-            this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (this.friction);
+        this.sprintState = {
+            tick : 0,
+            tickPerFrame : 20
         }
         
+        this.pedesterianState = {
+            tick : 0,
+            tickPerFrame : 6,
+            frameIndex : 0,
+            spriteIndex : [0 ,27 , 57,90, 127, 157],
+            mobIndex : [ -5, 30,68,105, 140,178, 215, 255],
+            policeIndex : [0 ,25, 55,88, 125, 155, 188, 225, 255, 288],
+
+            directionTick : 0,
+            directionChangeWait : 500,
+            hasTurned : true,
+            hasFallen : false,
+            
+        }
+    }
+
+    punch = (showPursuitBar) =>{
+
+
+    }
+
+    hit = (obj, showPlayersHeart) =>{
+        this.onMove= false
+        this.hitState.tick+= 1
+        
+        if(this.hitState.tick > this.hitState.tickPerFrame){
+            if(obj.state.health > 0){
+                obj.onMove = false
+                obj.state.health -= 1
+                if(obj.isPlayer){
+                    showPlayersHeart(obj.state.health)
+                }
+            }
+            this.hitState.tick = 0
+        }
+        setTimeout(() =>{
+            this.onMove = true
+        }, 500)
+        setTimeout(() =>{
+            obj.onMove = true
+        }, 300)
+    }
+
+    drawPerson = (sprite) =>{
+        let state;
+        if(this.isPlayer){
+            state = this.playerState;
+        }else{
+            state = this.pedesterianState;
+        }       
+        let spriteIndex = state.spriteIndex;  
+
+        if(this.isMob){
+            spriteIndex = state.mobIndex
+        }else if(this.isPolice){
+            spriteIndex = state.policeIndex
+        }
+        if(this.onMove){
+            state.tick++
+            
+            if(state.tick > state.tickPerFrame){
+                state.tick = 0
+                
+                if(state.frameIndex < spriteIndex.length - 1){
+                    sprite = {...sprite, sy : spriteIndex[state.frameIndex]}
+                    state.frameIndex++
+                    return sprite
+                }else{
+                    state.frameIndex = 0
+                }
+            }
+        }
+        return {...sprite, sy : spriteIndex[state.frameIndex]}
+    }
+
+    getInCar = (checkCars) =>{
+        let {isCloseToCar, closeCar} = checkCars()   
+        if(isCloseToCar && closeCar){
+            if(this.isActive){
+                this.updateCollisionPosition = false
+                this.isActive = false   
+            }
+            closeCar.updateCollisionPosition = false;
+        }    
+        return closeCar
+    }
+
+    pursuitPlayer = (player, updatePersonPath) =>{
+        if(this.isPolice && this.onMove){
+            if(player.state.pursuit > 0 && player.state.health > 0){
+                let xDiff = player.x - this.x
+                let yDiff = player.y - this.y 
+                this.direction = Math.atan2(yDiff, xDiff) * 180 / Math.PI + 90
+                this.move()
+            }else{
+                this.move(updatePersonPath)
+            }  
+        }
+    }
+
+    movePerson = (degree, updatePersonPath) =>{
+        let friction = this.friction
+        if(!this.isPlayer){
+            friction = this.pedesterianFriction
+        }
+        this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (1- friction);
+        this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- friction);
+        this.onMove = true;
+        if(updatePersonPath){
+            updatePersonPath(this)
+        }
+    }
+
+    resetVelocity = (showPlayerStamina) =>{
+        if(this.isPlayer){
+            this.playerState.tickPerFrame = 8
+            this.velocity = 1.5
+        }else{
+            this.velocity = 1
+        }
+        this.updateSprint('increase', showPlayerStamina)
+    }
+
+    updateSprint = (action, showPlayerStamina) =>{
+        let maxSprintValue = this.isPlayer ? 10 : 7
+        
+        this.sprintState.tick++
+        if(this.sprintState.tick > this.sprintState.tickPerFrame){
+            this.sprintState.tick = 0
+            if(action === 'decrease'){
+                if(this.state.sprint <= 0) {
+                    this.isRunnable = false;
+                }else{
+                    this.state.sprint -= 1
+                }
+                
+            }else if(action === 'increase'){
+                if(this.state.sprint >= maxSprintValue){
+                    this.isRunnable = true
+                }else{
+                    this.state.sprint += 1
+                }
+            }
+            showPlayerStamina()
+        }
+        
+    }
+
+    sprint = (showPlayerStamina) =>{
+        if(this.isRunnable){
+            if(this.isPlayer){
+                this.playerState.tickPerFrame = 4
+                this.velocity = 4
+                this.updateSprint('decrease', showPlayerStamina)
+            }else{
+                this.velocity = 3
+            }
+        }else{
+            this.resetVelocity(showPlayerStamina)
+        }     
+    }
+
+
+    move=(updatePersonPath)=>{
+        let degreeOffSet = 270 
+        if(!this.isPlayer){
+            if(this.state.health > 0){
+                let degree = this.direction
+                if(this.state.health > 0){
+                    this.movePerson(degree-90, updatePersonPath)
+                }else{
+                    this.updateCollisionPosition = false
+                }
+            }
+            
+        }else{
+            if(this.state.health > 0){
+                let degree = getMoveDirection(this.buffer) 
+                if(degree || degree === 0){
+                    this.direction = degree - degreeOffSet
+        
+                    if(this.friction > 0){
+                        this.friction -= 0.03
+                    }
+                    this.movePerson(degree, updatePersonPath)
+                }else{
+                    this.onMove = false;
+                    this.friction = 0.9
+                }  
+            }
+        }
+
     }
 }

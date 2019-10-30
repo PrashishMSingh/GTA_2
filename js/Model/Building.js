@@ -3,7 +3,8 @@ class Building extends Model{
         super(context, x, y, width, height)     
         this.floors = floors;
         this.side = side;
-        this.floorList = []
+        this.floorList = [];
+        this.updateCollisionPosition = true
     }
 
     createFloor = (player) =>{
@@ -12,6 +13,4 @@ class Building extends Model{
             this.floorList.push(flat)
         }
     }
-
-
 }

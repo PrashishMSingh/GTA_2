@@ -3,6 +3,7 @@
 <link>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/16749ecba0.js" crossorigin="anonymous"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>GTA 2</title>
     <link rel = 'stylesheet' href = './css/reset.css'></link>
@@ -15,6 +16,22 @@
     </header>
     <main>
         <div class = "main-container">
+            <div class = "game-info-wrapper clear-fix">
+                <div class = "player-info clear-fix">
+                    <div class = "player-image">
+                        <img src = "./images/profile_pic.jpeg" alt = 'player profile' height = '100%' width = '100%'/>
+                    </div>
+                    <div class = 'health-sprint-bar'>
+                        <div class = 'health-bar'></div>
+                        <div class = 'sprint-bar'></div>                        
+                    </div>
+                </div>
+                <div class = 'pursuit-money-wrapper clear-fix'>
+                    <div class = 'money-bar'></div>
+                    <div class = "pursuit-bar clear-fix"></div>
+                </div>
+                
+            </div>
             <div class = 'game-container'>
 
             </div>
@@ -27,6 +44,10 @@
         <script src = './js/Model/Data/PersonData.js'></script>
         <script src = './js/Model/Data/RoadData.js'></script>
 
+        <script src = './js/utils/SpriteCords.js'></script>
+        <script src = './js/utils/utilities.js'></script>
+        
+
         
         <script src = './js/Model/Model.js'></script>
         <script src = './js/Model/fence.js'></script>
@@ -35,6 +56,7 @@
         <script src = './js/Model/Cars.js'></script>
         <script src = './js/Model/Path.js'></script>
         <script src = './js/Model/Person.js'></script>
+        <script src = './js/Model/Parking.js'></script>
 
         
         <script src = './js/Enviroment/Data/Quadrants/Quadrant1.js'></script>

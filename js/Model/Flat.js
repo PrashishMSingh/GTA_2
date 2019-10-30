@@ -9,21 +9,18 @@ class Flat{
         this.parentHeight = parentHeight;
         this.floor = floor;
         this.side = side;
-        
         this.init()
         this.create()
     }
 
     init = () =>{
         this.minFloorHeight = 5;
-        this.maxFloorHeight = 50
+        this.maxFloorHeight = 30
         this.yFloorHeight = - this.maxFloorHeight;
         this.xFloorHeight = - this.maxFloorHeight;
         
         this.gameFriction = 0.2;
-        let imagePath = './images/model_sprite.jpg'
-        this.image = new Image()
-        this.image.src = imagePath
+        this.sides = []
     }
 
     create = () =>{
@@ -56,7 +53,7 @@ class Flat{
 
     }
 
-    changePrespective = (player) =>{
+    changePerspective = (player) =>{
         let xGap = -this.xFloorHeight;
         let yGap = -this.yFloorHeight;
         
@@ -67,16 +64,13 @@ class Flat{
                 break;
             
             case 'left':
-                xGap = (this.parentX  + this.parentWidth/2 - player.x - player.width  ) * this.gameFriction
+                xGap = (this.parentX  + this.parentWidth/2 - player.x - player.width ) * this.gameFriction
                 yGap = (player.y - this.parentY) * this.gameFriction;
                 break;
 
             case 'down':
                 xGap = (this.parentX - player.x ) * this.gameFriction;
                 yGap = (player.y - player.width - this.parentY ) * this.gameFriction;
-                break;
-
-            case 'up':
                 break;
         }
 
@@ -104,159 +98,129 @@ class Flat{
         this.draw(player)
     }
 
-    changeFloorHeight = (xFloorHeight, yFloorHeight) =>{
-        this.xFloorHeight = xFloorHeight;
-        this.yFloorHeight = yFloorHeight;
-        
-    }
-
-    drawFPoints = (tempX, x, y) =>{
-        // top point
-        this.context.lineTo(tempX, y - this.yFloorHeight)
-        
-        // left point
-        this.context.lineTo(x, y)
-        
-        // bottom point
-        this.context.lineTo(x, y + this.parentHeight )
-
-        // right point
-        this.context.lineTo(tempX, y + this.parentHeight - this.yFloorHeight)
-    }
-
-    drawRPoints = (tempX, x, y) =>{
-        // top point
-        this.context.lineTo(tempX, y - this.yFloorHeight)
-            
-        // left point
-        this.context.lineTo(tempX + this.parentWidth , y - this.yFloorHeight)
-        
-        // bottom point
-        this.context.lineTo(x + this.parentWidth, y)
-
-        // right point
-        this.context.lineTo(x, y)
-        
-        this.context.closePath()
-    }
-
-    drawLPoints = (tempX, x, y) =>{
-        // top point
-        this.context.lineTo(tempX, y - this.yFloorHeight)
-            
-        // left point
-        this.context.lineTo(x , y)
-
-        // bottom point
-        this.context.lineTo(x , y + this.parentHeight)
-
-        // right point
-        this.context.lineTo(tempX, y + this.parentHeight - this.yFloorHeight)
-
-        
-        
-        this.context.closePath()
-    }
-
-    drawBPoints = (tempX, x, y) =>{
-        // top point
-        this.context.lineTo(x, y)
-            
-        // top right point
-        this.context.lineTo(x + this.parentWidth ,y )
-        
-        // bottom right point
-        this.context.lineTo(tempX + this.parentWidth, y - this.yFloorHeight )
-        
-        // bottom left 
-        this.context.lineTo(tempX , y - this.yFloorHeight)
-        
-        this.context.closePath()
-    }
-
-    drawTPoints = (tempX, x, y) => {
-        // top point
-        this.context.lineTo(tempX, y)
-                        
-        // left point
-        this.context.lineTo(tempX + this.parentWidth  , y)
-
-        // bottom point
-        this.context.lineTo(tempX+ this.parentWidth , y + this.parentHeight)
-
-        // right point
-        this.context.lineTo(tempX, y + this.parentHeight)
-    }
-
-    drawPoints = (color, x, y, orientation ) =>{
-        this.context.beginPath()
-        let tempX =  this.side === 'right'? x - this.xFloorHeight : x + this.xFloorHeight
-        switch(orientation){
-            case 'front':
-                this.drawFPoints(tempX, x, y)
-                // if(this.side === 'down'){
-                //     this.drawRPoints(tempX, x, y + this.parentHeight)
-                // }else{
-                    
-                // }
-                break;
-            case 'right':
-                this.drawRPoints(tempX, x, y)
-                // if(this.side === 'down'){
-                //     this.drawFPoints(tempX, x, y - this.parentHeight)
-                    
-                // }else{
-                    
-                // }
-                break;
-            case 'top':
-                this.drawTPoints(tempX, x, y)
-                break;
-            
-            case 'back':
-                
-                this.drawBPoints(tempX, x, y)
-                break;
-
-            case 'left':
-                if(this.side == 'right'){
-                    this.drawFPoints(tempX, x, y)
-                }else{
-                    this.drawLPoints(tempX, x, y)
-                }
-                
-                break;
+    frontCords = (tempX, x, y) =>{
+        return{
+            top_left : {x : tempX, y : y-this.yFloorHeight},
+            top_right:{x, y},
+            bottom_right:{x, y:y+this.parentHeight},
+            bottom_left : {x : tempX, y : y +this.parentHeight - this.yFloorHeight}
         }
+    }
 
-        this.context.closePath()        
-        this.context.fillStyle = color
-        this.context.fill()        
-        this.context.restore()
+    rightCords = (tempX, x, y) =>{
+        return{
+            top_left : {x : tempX, y : y-this.yFloorHeight},
+            top_right : {x : tempX + this.parentWidth, y : y-this.yFloorHeight},
+            bottom_right : {x : x+this.parentWidth, y},
+            bottom_left : {x, y}
+        }
+    }
+
+    leftCords = (tempX, x, y) =>{
+
+        return{
+            top_left:{x : tempX, y : y-this.yFloorHeight},
+            top_right:{x, y},
+            bottom_right:{x, y:y + this.parentHeight},
+            bottom_left : {x : tempX, y: y+this.parentHeight -this.yFloorHeight}
+        }
+    }
+
+    bottomCords = (tempX, x, y) =>{
+        return{
+            top_left : {x, y},
+            top_right : {x : x+this.parentWidth, y},
+            bottom_right : {x : tempX +this.parentWidth, y: y-this.yFloorHeight},
+            bottom_left : {x : tempX, y:y-this.yFloorHeight}
+        }
+    }
+
+    topCords = (tempX, x, y) => {
+        return{
+            top_left : {x : tempX, y},
+            top_right : {x : tempX + this.parentWidth, y},
+            bottom_right : {x : tempX + this.parentWidth, y : y + this.parentHeight},
+            bottom_left : {x : tempX, y:y+this.parentHeight}
+        }
+    }
+
+    drawSides = (cords) =>{
+        Object.keys(cords).map(key =>{
+            this.context.lineTo(cords[key].x, cords[key].y)
+        })
+        this.context.closePath()    
+    }
+
+    getCords = (x, y, orientation) =>{
+        let tempX =  this.side === 'right'? x - this.xFloorHeight : x + this.xFloorHeight
+        return {
+            front:this.frontCords(tempX, x, y),
+            right: this.rightCords(tempX, x, y),
+            top: this.topCords(tempX, x, y),
+            back: this.bottomCords(tempX, x, y),
+            left: this.leftCords(tempX, x, y)
+        }[orientation]
+    }
+
+
+    getSides = (index) =>{
+        return [
+            ['right', 'left', 'back', 'front', 'top'],
+            ['front', 'right','left', 'back', 'top'],
+            ['front', 'right', 'back','left', 'top'],
+        ][index]
+        
+    }
+
+    drawCube = (index) =>{
+        let sides = this.getSides(index)
+        sides.map(side=>{
+            let params = this.getCubeParams(side)
+            let sideCords = this.getCords(params.x, params.y, side)
+            this.context.beginPath()
+            this.drawSides(sideCords)
+            this.context.fillStyle = params.color
+            this.context.strokeStyle = 'black'
+            this.context.fill()        
+            this.context.stroke()
+            this.context.restore()
+        })
+    }
+
+    getCubeParams =(orientation) =>{
+        return{
+                back : { x : this.backSideBoxData.x, y : this.backSideBoxData.y, color : '#2356B5'},
+                left : { x : this.leftSideBoxData.x, y : this.leftSideBoxData.y, color : '#137FDF' },
+                front : {x : this.frontSideData.x, y : this.frontSideData.y, color : '#137FDF'},
+                right: {x : this.rightSideBoxData.x, y : this.rightSideBoxData.y, color: '#2356B5'},
+                top : {x : this.topSideBoxData.x, y:this.topSideBoxData.y, color: 'grey'}
+
+        }[orientation]
     }
 
 
     draw = (player) =>{
         if(player){
-            // when player goes over the building
-            if(player.y + player.height > this.parentY && (player.x +player.width < this.parentX || player.y + player.height > this.parentY)){
-                this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back')  
-                this.drawPoints('#137FDF', this.leftSideBoxData.x, this.leftSideBoxData.y, 'left')                 
-                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front')
-                this.drawPoints('#2356B5', this.rightSideBoxData.x, this.rightSideBoxData.y, 'right')   
-                this.drawPoints('grey', this.topSideBoxData.x, this.topSideBoxData.y, 'top')    
+            // when player has not passed building vertically
+            if(player.y + player.height < this.parentY ){
+                if(player.x + player.width > this.parentX){
+                    this.drawCube(1)
+                }else{
+                    this.drawCube(0)  
+                }
             }
             else{
-                       
-                this.drawPoints('#2356B5', this.rightSideBoxData.x, this.rightSideBoxData.y, 'right')
-                this.drawPoints('#137FDF', this.frontSideData.x, this.frontSideData.y, 'front')  
-                                
-                this.drawPoints('#137FDF', this.leftSideBoxData.x, this.leftSideBoxData.y, 'left')    
-                this.drawPoints('#2356B5', this.backSideBoxData.x, this.backSideBoxData.y, 'back') 
-                this.drawPoints('grey', this.topSideBoxData.x, this.topSideBoxData.y, 'top')    
+                // when player has passed building horiaontally
+               if(player.x + player.width > this.parentX + this.parentWidth){
+                    this.drawCube(2)
+                }    
+                else if(player.x + player.width > this.parentX){
+                    this.drawCube(1)
+                }            
+                else{
+                    this.drawCube(0)    
+                }                
             }            
         }
-        
-        
-        
     }
 }
