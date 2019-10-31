@@ -88,7 +88,6 @@ class Person extends Model{
 
     checkIsDead = () =>{
         if(this.state.health <= 0){
-            console.log('has Died')
             this.isDead = true
         }
     }
@@ -133,7 +132,6 @@ class Person extends Model{
                 obj.onMove = false
                 obj.state.health -=1
                 obj.checkIsDead()
-                console.log(obj.state.health)
                 if(obj.health <= 0){
                     if(obj.isPolice){
                         this.state.policeKills +=1
@@ -260,7 +258,6 @@ class Person extends Model{
         let friction = this.friction
         if(!this.isPlayer){
             friction = this.pedesterianFriction
-            console.log(this.onMove)
         }else{
             this.onMove = true;
         }

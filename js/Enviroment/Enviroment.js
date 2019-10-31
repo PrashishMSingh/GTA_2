@@ -43,7 +43,7 @@ class Environment{
         this.top = 0
         this.left = 0
         this.pedesterianState = {
-            generationTime : 200,
+            generationTime : 100,
             timer : 0,
             maxPedesterian : 20
         },
