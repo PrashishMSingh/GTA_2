@@ -175,6 +175,7 @@ let quadrant1 = {
             direction : 90,
             maxSpeed : 10,
             onMove :false,
+            model : 1,
             isPoliceVehicle : false
         },
 
@@ -187,6 +188,7 @@ let quadrant1 = {
             direction : 90,
             maxSpeed : 10,
             onMove :false,
+            model : 2,
             isPoliceVehicle : false
         },
 
@@ -198,6 +200,7 @@ let quadrant1 = {
             velocity : 5,
             direction : 90,
             maxSpeed : 10,
+            model : 3,
             onMove :false,
             isPoliceVehicle : false
         },

@@ -374,17 +374,20 @@ class Environment{
     }
 
     objectItemCollision = (item, obj ) =>{
-        obj.pedesterianState.hasFallen = true
-        obj.updateCollisionPosition = false
         obj.onMove = false
-        obj.hasFallen = true
+        obj.updateCollisionPosition = false
         item.updateCollisionPosition = false
+        obj.hasFalled = true
         setTimeout(() =>{
-            if(obj.pedesterianState.hasFallen){
+            if(obj.hasFalled){
                 if(obj.state.health > 0){
+                    if(obj.isPolice && ! this.player.state.pursuit){
+                        this.player.state.pursuit = 1
+                    }
                     obj.state.health -= 1
+                    console.log(obj.state.health)
                     obj.checkIsDead()
-                    obj.hasFallen = false
+                    obj.hasFalled = false
                     item.updateCollisionPosition = true
                     obj.updateCollisionPosition = true
                     obj.onMove = true
@@ -676,11 +679,12 @@ class Environment{
     }
 
     updatePedesterianMove = () =>{
-        this.content.pedesterian.map(pedesterian =>{
+        this.content.pedesterian.map((pedesterian, index) =>{
             let condition1 =pedesterian.x > Math.abs(this.left) + SCREEN_WIDTH * 2
             let condition2 = pedesterian.y > Math.abs(this.top) + SCREEN_HEIGHT * 2
-            if(condition1 || condition2){
-                this.content.pedesterian = this.content.pedesterian.filter(indivisual => indivisual !== pedesterian)
+
+            if(condition1 || condition2 || pedesterian.isDead){
+                this.content.pedesterian.splice(index, 1)
             }else{
                 if(!pedesterian.pedesterianState.hasFallen && pedesterian.state.health > 0){
                     pedesterian.move(this.updatePersonPath)
@@ -689,11 +693,20 @@ class Environment{
                     if(pedesterian.isPolice && this.player.state.pursuit > 0 && this.isPlayerNearby(pedesterian, checkRange)){
                         pedesterian.pursuitPlayer(this.player, this.updatePersonPath)
                     }
-                    // pedesterian.onMove = true
                 }
                 this.hasCollided(pedesterian)
-            }   
+            }
         })
+
+        // this.content.pedesterian = this.content.pedesterian.filter(pedesterian=>{
+        //     let condition1 =pedesterian.x > Math.abs(this.left) + SCREEN_WIDTH * 2
+        //     let condition2 = pedesterian.y > Math.abs(this.top) + SCREEN_HEIGHT * 2
+
+        //     if(condition1 || condition2 || pedesterian.isDead){
+        //         console.log(' : ', condition1 , " : ", condition2, " : ", indivisual.isDead)
+        //         return false
+        //     }return true
+        // })
         
     }
 
@@ -717,7 +730,8 @@ class Environment{
                     if(this.content[key].isActive){
                         item.draw()
                     }
-                }else{
+                }
+                else{
                     item.draw(color[key])
                 }
                 

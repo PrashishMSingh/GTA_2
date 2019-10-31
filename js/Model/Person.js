@@ -80,15 +80,16 @@ class Person extends Model{
 
             directionTick : 0,
             directionChangeWait : 500,
-            hasTurned : true,
-            hasFallen : false,
-            
+            hasTurned : true,            
         }
     }
 
     checkIsDead = () =>{
         if(this.state.health <= 0){
-            this.isDead = true
+            this.hasFalled = true
+            setTimeout(() =>{
+                this.isDead = true
+            }, 2000)
         }
     }
 
@@ -170,7 +171,7 @@ class Person extends Model{
         
     }
 
-    drawFallenPose = (sprite) =>{
+    drawFalledPose = (sprite) =>{
         return sprite
     }
 
@@ -261,7 +262,7 @@ class Person extends Model{
         }else{
             this.onMove = true;
         }
-        if(this.onMove){
+        if(this.onMove && !this.isDead){
             this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (1- friction);
             this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- friction);
         }
