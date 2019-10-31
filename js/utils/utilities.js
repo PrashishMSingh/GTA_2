@@ -84,6 +84,8 @@ getSprite=(x, y, width, height, item)=>{
         'car_1' : {sx : 0, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
         'car_2' : {sx : 185, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
         'car_3' : {sx : 185, sy : 210, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
+        
+        'car_police' :  {sx : 185, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
 
         'player' : {sx : 10, sy : 10, sw : 90, sh: 90, dx : x, dy:y, dw : width, dh : height},
 
@@ -95,6 +97,8 @@ getSprite=(x, y, width, height, item)=>{
         'pedesterian_down' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
 
         'police' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
+
+        
 
         'police_down' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
 

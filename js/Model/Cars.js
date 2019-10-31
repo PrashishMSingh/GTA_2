@@ -33,23 +33,24 @@ class Car extends Model{
 
     setModelAttrib = () =>{
         if(this.isPoliceVehicle){
-            this.velocity = 5
+            this.velocity = 3
             this.friction = 0.6
         }
+        
         switch(this.model){
             case 1:
                 this.friction = 0.8
-                this.velocity = 4
+                this.velocity = 3
                 break
 
             case 2:
                 this.friction = 0.6
-                this.velocity = 5
+                this.velocity = 4
                 break
 
             case 3:
                 this.friction = 0.4
-                this.velocity = 6
+                this.velocity = 5
                 break
         }
     }
@@ -85,7 +86,20 @@ class Car extends Model{
             }
             this.direction = (this.state.degree - offSet)              
         }
+    }
 
+    pursuitPlayer = (player, updateObjPath) =>{
+        if(this.isPoliceVehicle && this.onMove){
+            if(player.state.pursuit > 0 && player.state.health > 0){
+                let xDiff = player.x - this.x
+                let yDiff = player.y - this.y 
+                this.direction = Math.atan2(yDiff, xDiff) * 180 / Math.PI + 90
+                this.velocity = 2
+                this.move()
+            }else{
+                this.move(updateObjPath)
+            }  
+        }
     }
 
     moveCar = (degree) =>{

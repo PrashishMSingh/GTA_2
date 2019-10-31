@@ -74,10 +74,17 @@ class Model{
             
         }
         else if(this instanceof Car){
-            spriteName = 'car_'+ this.model
+            spriteName = 'car'
             this.image.src = './images/gta_3_sprite.png'
             requireRotate = true;
             degree = this.direction -90
+            if(this.isPoliceVehicle){
+                this.image.src = './images/gta_3_sprite.png'
+                spriteName += '_police'
+                // console.log(spriteName)
+            }else{
+                spriteName += `_${this.model}`
+            }
         }
         else if(this instanceof Parking){
             spriteName = 'parking'

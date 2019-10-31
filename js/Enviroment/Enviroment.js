@@ -11,6 +11,8 @@ class Environment{
         this.pursuitBar = pursuitBar;
         this.context = context;
         this.createMobProb = 0.2
+        this.policeVehicleProb = 0.2
+        this.hasPoliceCar = false
 
         this.createPedesterianProb = 0.8
 
@@ -23,9 +25,9 @@ class Environment{
             fence : [],
             parking: [],
             path : [],
+            pedesterian : [],
             car : [],
             building : [],
-            pedesterian : [],
             player : []
         }
         
@@ -231,18 +233,20 @@ class Environment{
     }
 
 
-    generatePoliceVehicle = () =>{
+    generatePedesterianCar = () =>{
         this.policeVehicleState.timer++
         if(this.policeVehicleState.timer > this.policeVehicleState.generationTime){
             this.policeVehicleState.timer = 0
             if(this.content.car.length < this.policeVehicleState.maxVehicle){
                 let {spawnPath, side} = this.getObjectsSpawnPath('car')
-                
                 if(spawnPath){
                     let direction = this.getMoveDir(side)
                     let carWidth = 80;
                     let carHeight = 40;
                     let car = new Car(this.context, spawnPath.x, spawnPath.y + 20, carWidth, carHeight, direction, true, true, 1)
+                    let isPoliceCar = Math.random()<this.policeVehicleProb? true : false
+                    car.isPoliceVehicle = isPoliceCar
+                    
                     this.content.car.push(car)
                 }
             }
@@ -286,7 +290,7 @@ class Environment{
                 switch(collisionPlace){
                     case 'top':
                         if(obj.direction === 180){
-                            direction = Math.random() > 0.5 ? 270: 90
+                            direction = 90
                         }else if(obj.direction === 90){
                             direction = Math.random() > 0.5 ? 0: 180
                         }else if(obj.direction === 270){
@@ -316,7 +320,7 @@ class Environment{
 
                     case 'bottom':
                         if(obj.direction === 0){
-                            direction = Math.random() > 0.5 ? 270: 90
+                            direction = 90
                         }else if(obj.direction === 270){
                             direction = Math.random() > 0.5 ? 0: 180
                         }else if(obj.direction === 90){
@@ -447,9 +451,9 @@ class Environment{
         return collisionPlace
     }
 
-    changePedesterianDirection = (obj,item, collisiontType) =>{
-        if(obj instanceof Person){
-            if(!obj.isPlayer){
+    changeObjectDirection = (obj,item, collisiontType) =>{
+        if(obj instanceof Person || obj instanceof Car){
+            if(!obj.isPlayer || !obj.isPlayerCar){
                 let direction = obj.direction
                 if(collisiontType == 'horizontal'){
                     if((Math.abs(direction) !== 0 ) && Math.abs(direction !== 180 )){
@@ -473,26 +477,25 @@ class Environment{
 
     updateCollidedPlace = (item, obj) =>{
         let collisionPlace = this.getCollisionPlace(item, obj)
-        
         switch(collisionPlace){
             case 'left':
                 obj.x = item.x + item.width
-                this.changePedesterianDirection(obj, item, 'horizontal')
+                this.changeObjectDirection(obj, item, 'horizontal')
                 break;
             
             case 'right':
                 obj.x = item.x -obj.width
-                this.changePedesterianDirection(obj, item, 'horizontal')
+                this.changeObjectDirection(obj, item, 'horizontal')
                 break
             
             case 'bottom':
                 obj.y = item.y - obj.height
-                this.changePedesterianDirection(obj, item, 'vertical')
+                this.changeObjectDirection(obj, item, 'vertical')
                 break;
             
             case 'top':
                 obj.y = item.y + item.height
-                this.changePedesterianDirection(obj, item, 'vertical')
+                this.changeObjectDirection(obj, item, 'vertical')
         }  
     }
 
@@ -504,8 +507,13 @@ class Environment{
         setTimeout(() =>{
             if(obj.hasFalled){
                 if(obj.state.health > 0){
-                    if(obj.isPolice && ! this.player.state.pursuit){
-                        this.player.state.pursuit = 1
+                    if(obj.isPolice && !this.player.state.pursuit){
+                        if(item instanceof Car){
+                            if(item === this.playersCar){
+                                this.player.state.pursuit = 1
+                                this.showPursuitStar()
+                            }                            
+                        }                        
                     }
                     obj.state.health -= 1
                     obj.checkIsDead()
@@ -547,12 +555,9 @@ class Environment{
                     }
                 }
                 else{
-                    
                     this.updateCollidedPlace(item, obj)                
                 }
-                
             }
-            
             return true
         }
         return false;
@@ -564,9 +569,25 @@ class Environment{
             this.content[key].map(item =>{
 
                 if(obj instanceof Car){
-                    if(key ==='building'){
-                        if(this.checkCollision(item, obj)){
-                            collided = true
+                    if(key ==='building' || key === 'car'){
+                        if(item !== obj){
+                            if(this.checkCollision(item, obj)){
+                                collided = true
+                                if(obj.isPlayerCar && item.isPoliceVehicle){
+                                    if(!this.player.state.pursuit){
+                                        this.player.state.pursuit = 1
+                                        this.showPursuitStar()
+                                    }
+                                }
+                            
+                            }
+                        }                        
+                    }
+                    if(!obj.isPlayerCar){
+                        if(item instanceof Person && item.isPlayer){
+                            if(this.checkCollision(item, obj)){
+                                collided = true
+                            }
                         }
                     }
                 }
@@ -796,7 +817,7 @@ class Environment{
         }      
 
         this.generatePedesterian()
-        this.generatePoliceVehicle()
+        this.generatePedesterianCar()
     }
 
     isInsideRenderZone = (obj) =>{
@@ -815,9 +836,19 @@ class Environment{
         this.content.car.map( (car, index ) =>{
             if(car.onMove){
                 if(!this.isInsideRenderZone(car)){
+                    if(car.isPoliceCar){
+                        this.hasPoliceCar = false
+                    }
                     this.content.car.splice(index, 1)
                 }
                 else if(!this.isPlayerCar){
+                    let checkRange = 10
+                    if(car.isPoliceVehicle && this.player.state.pursuit > 0 && this.isPlayerNearby(car, checkRange)){
+                        if(!this.player.isActive){
+                            console.log('here')
+                            car.pursuitPlayer(this.player, this.updateObjPath)
+                        }                        
+                    }
                     car.move(this.updateObjPath)
                 }
                 this.hasCollided(car)

@@ -136,7 +136,6 @@ class Person extends Model{
                     if(obj.state.health > 0){
                         obj.onMove = false
                         obj.state.health -= 1
-                        obj.sprint()
                         obj.checkIsDead()
                         showPlayersHeart(obj.state.health)
                     }
