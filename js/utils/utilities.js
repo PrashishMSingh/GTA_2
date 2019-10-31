@@ -83,13 +83,24 @@ getSprite=(x, y, width, height, item)=>{
     let spriteData = {
         'car' : {sx : 0, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
 
-        'player' : {sx : 30, sy : 60, sw : 100, sh: 100, dx : x, dy:y, dw : width, dh : height},
+        'player' : {sx : 10, sy : 10, sw : 90, sh: 90, dx : x, dy:y, dw : width, dh : height},
+
+        'player_punch' : {sx : 10, sy : 10, sw : 100, sh: 100, dx : x, dy:y, dw : width, dh : height},
+        // 'player' : {sx : 30, sy : 60, sw : 100, sh: 100, dx : x, dy:y, dw : width, dh : height},
 
         'pedesterian' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
+        
+        'pedesterian_down' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
 
         'police' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
+
+        'police_down' : {sx : 0, sy : 0, sw : 25, sh: 35, dx : x, dy:y, dw : width, dh : height},
+
+        'police_punch' : {sx : 10, sy : 10, sw : 30, sh: 30, dx : x, dy:y, dw : width, dh : height},
         
         'mob' : {sx : 0, sy : 0, sw : 30, sh: 45, dx : x, dy:y, dw : width, dh : height},
+        
+        'mob_down' : {sx : 0, sy : 0, sw : 30, sh: 45, dx : x, dy:y, dw : width, dh : height},
 
         'fenceVR' : {sx : 60 * 23 - 12, sy : 60*32, sw : 60, sh:60, dx : x, dy:y, dw : width, dh : height},
         

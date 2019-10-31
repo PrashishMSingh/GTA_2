@@ -44,7 +44,7 @@ let mainElement = document.getElementsByClassName('game-container')[0]
 let game = new Game(mainElement)
 
 let xPos = 160
-let yPos = 0
+let yPos = 80
 let playerHeight = 30
 let playerWidth = 30
 let player = new Person(this.context, xPos, yPos, playerWidth, playerHeight, this.playerVelocity, true, 180)   

@@ -16,14 +16,20 @@ class Person extends Model{
         this.isMob = isMob
         this.isPolice = isPolice
         this.isRunnable = false
-        this.hasPunched = false
+        this.isFighting = false
+        this.isHitting = false
+        this.hasTurned = false
+        this.onPursuit = false
+        this.hasFalled = false
+        this.isDead = false
         
         this.state = {   
             health : 7,    
             sprint : 7,
             money : 100,
             pursuit : 0,
-            kill : 0
+            kill : 0,
+            policeKills : 0
         }
         this.resetState()
     }
@@ -33,13 +39,31 @@ class Person extends Model{
             tick : 0,
             tickPerFrame : 8,
             frameIndex : 0,
-            spriteIndex :  [50, 150, 280]
+            spriteIndex :  [180, 5, 100],
+            // spriteIndex : [110, 80, 50],
+            // spriteIndex :  [50, 150, 280]
         },
+
+        this.punchState = {
+            tick : 0,
+            tickPerFrame : 4,
+            frameIndex : 0,
+            spriteIndex :  [ 320, 150, 40, 20],
+        }
+
+        this.lathiChargeState = {
+            tick : 0,
+            tickPerFrame : 4,
+            frameIndex : 0,
+            spriteIndex : [110, 80, 50],
+        }
 
         this.hitState = {
             tick : 0,
             tickPerFrame : 18
         }
+
+
 
         this.sprintState = {
             tick : 0,
@@ -62,31 +86,129 @@ class Person extends Model{
         }
     }
 
-    punch = (showPursuitBar) =>{
+    checkIsDead = () =>{
+        if(this.state.health <= 0){
+            console.log('has Died')
+            this.isDead = true
+        }
+    }
 
-
+    updatePursuit = (showPursuitStar) =>{
+        let kill = this.state.kill;
+        let policeKills = this.state.policeKills
+        let pursuit = this.state.pursuit;
+        if(kill > 30 || policeKills > 10){
+            pursuit = 5
+        }else if(kill > 25 || policeKills > 7){
+            pursuit = 4
+        }else if(kill > 20 || policeKills > 5){
+            pursuit = 3
+        }else if(kill > 10 || policeKills > 2){
+            pursuit = 2
+        }else if(kill > 5 || policeKills > 1){
+            pursuit = 1
+        }
+        this.state.pursuit = pursuit
+        showPursuitStar()
     }
 
     hit = (obj, showPlayersHeart) =>{
         this.onMove= false
+        this.isFighting = true
+        this.isHitting = true
         this.hitState.tick+= 1
-        
-        if(this.hitState.tick > this.hitState.tickPerFrame){
-            if(obj.state.health > 0){
-                obj.onMove = false
-                obj.state.health -= 1
-                if(obj.isPlayer){
-                    showPlayersHeart(obj.state.health)
+        if(obj){
+            if(obj.isPlayer){
+                if(this.hitState.tick > this.hitState.tickPerFrame){
+                    if(obj.state.health > 0){
+                        obj.onMove = false
+                        obj.state.health -= 1
+                        obj.sprint()
+                        obj.checkIsDead()
+                        showPlayersHeart(obj.state.health)
+                    }
+                    this.hitState.tick = 0
                 }
-            }
-            this.hitState.tick = 0
+            }else{
+                obj.onMove = false
+                obj.state.health -=1
+                obj.checkIsDead()
+                console.log(obj.state.health)
+                if(obj.health <= 0){
+                    if(obj.isPolice){
+                        this.state.policeKills +=1
+                    }
+                    this.state.kill += 1
+                }
+            }         
+            if(obj.isPolice && !this.isPolice){
+                if(!this.state.pursuit){
+                    this.state.pursuit = 1
+                }
+            }   
+
+            setTimeout(() =>{
+                obj.onMove = true
+            }, 300)
         }
+        
         setTimeout(() =>{
             this.onMove = true
+            this.isHitting = false
+            if(!this.isPlayer){
+                this.isFighting = false
+            }
         }, 500)
-        setTimeout(() =>{
-            obj.onMove = true
-        }, 300)
+        
+    }
+
+    punch = (checkPeople) =>{
+        let punchRange = 1.5
+        let personNearBy = checkPeople(this, punchRange)
+        
+        if(!this.isHitting){
+            this.hit(personNearBy)  
+        }
+        
+    }
+
+    drawFallenPose = (sprite) =>{
+        return sprite
+    }
+
+    drawDeadPose = (sprite) =>{
+        return sprite
+    }
+
+    drawFightPose = (sprite) =>{
+        let state;
+        let spriteIndex;
+        if(this.isPlayer){
+            state = this.punchState
+            spriteIndex = this.punchState.spriteIndex
+        }else if(this.isPolice){
+            state = this.lathiChargeState
+            spriteIndex = this.lathiChargeState.spriteIndex
+        }
+        
+        if(this.isHitting){
+            this.animateSprite(sprite, state, spriteIndex)
+        }      
+        return {...sprite, sy : spriteIndex[state.frameIndex]}
+    }
+
+    animateSprite = (sprite, state, spriteIndex) =>{
+        state.tick++
+        if(state.tick > state.tickPerFrame){
+            state.tick = 0
+            if(state.frameIndex < spriteIndex.length - 1){
+                state.frameIndex++
+                sprite = {...sprite, sy : spriteIndex[state.frameIndex - 1]}
+                return sprite
+            }else{
+                state.frameIndex = 0
+            }
+        }
     }
 
     drawPerson = (sprite) =>{
@@ -104,19 +226,7 @@ class Person extends Model{
             spriteIndex = state.policeIndex
         }
         if(this.onMove){
-            state.tick++
-            
-            if(state.tick > state.tickPerFrame){
-                state.tick = 0
-                
-                if(state.frameIndex < spriteIndex.length - 1){
-                    sprite = {...sprite, sy : spriteIndex[state.frameIndex]}
-                    state.frameIndex++
-                    return sprite
-                }else{
-                    state.frameIndex = 0
-                }
-            }
+           this.animateSprite(sprite, state, spriteIndex)
         }
         return {...sprite, sy : spriteIndex[state.frameIndex]}
     }
@@ -150,12 +260,22 @@ class Person extends Model{
         let friction = this.friction
         if(!this.isPlayer){
             friction = this.pedesterianFriction
+            console.log(this.onMove)
+        }else{
+            this.onMove = true;
         }
-        this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (1- friction);
-        this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- friction);
-        this.onMove = true;
+        if(this.onMove){
+            this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (1- friction);
+            this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- friction);
+        }
+        
+
+        
         if(updatePersonPath){
-            updatePersonPath(this)
+            setTimeout(() =>{
+                updatePersonPath(this)        
+            }, 1500)
+            
         }
     }
 
@@ -196,21 +316,26 @@ class Person extends Model{
 
     sprint = (showPlayerStamina) =>{
         if(this.isRunnable){
+            this.playerState.tickPerFrame = 4
             if(this.isPlayer){
-                this.playerState.tickPerFrame = 4
-                this.velocity = 4
-                this.updateSprint('decrease', showPlayerStamina)
-            }else{
                 this.velocity = 3
+                this.updateSprint('decrease', showPlayerStamina)
             }
         }else{
             this.resetVelocity(showPlayerStamina)
         }     
+        if(!this.isPlayer && !this.isPolice){
+            this.velocity = 2
+            setTimeout(() =>{
+                this.velocity = 1
+            }, 5000)
+        }
     }
 
 
     move=(updatePersonPath)=>{
         let degreeOffSet = 270 
+        
         if(!this.isPlayer){
             if(this.state.health > 0){
                 let degree = this.direction
@@ -225,8 +350,8 @@ class Person extends Model{
             if(this.state.health > 0){
                 let degree = getMoveDirection(this.buffer) 
                 if(degree || degree === 0){
+                    this.isFighting = false
                     this.direction = degree - degreeOffSet
-        
                     if(this.friction > 0){
                         this.friction -= 0.03
                     }

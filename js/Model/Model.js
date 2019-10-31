@@ -32,21 +32,44 @@ class Model{
                 degree = 270
             }
         }else if(this instanceof Person){
-            spriteName = 'player'
+            
             requireRotate = true;
             degree = this.direction
             if(this.isPlayer){
-                this.image.src = './images/gta_player.png'
+                spriteName = 'player'                                
+                this.image.src = './images/player_move.png'
+                if(this.isFighting){
+                    spriteName += '_punch'
+                    this.image.src = './images/player_punch.png'
+                }
             }else if(this.isMob){
                 spriteName ='mob'
                 this.image.src = './images/mob_move.png'
+                if(this.hasFalled || this.isDead){
+                    spriteName += '_down'
+                    this.image.src = './images/mob_down.png'
+                }
             }else if(this.isPolice){
                 spriteName = 'police'
                 this.image.src = './images/police_move.png'
+
+                if(this.isFighting){
+                    spriteName += '_punch'
+                    this.image.src = './images/lathi_charge.png'
+                }
+                if(this.hasFalled || this.isDead){
+                    spriteName += '_down'
+                    this.image.src = './images/police_down.png'
+                }
             }
             else{
                 spriteName ='pedesterian'
                 this.image.src = './images/pedesterian_move.png'
+                if(this.hasFalled || this.isDead){
+                    spriteName += '_down'
+                    this.image.src = './images/pedes_down.png'
+                }
+                
             }
             
         }
@@ -89,11 +112,13 @@ class Model{
         if(this.isCrossPath){
             spriteName += '_CX'
         }
-
         else if(this.isLeftJunction || this.isRightJunction){
             if(this.isLeftJunction){
-                spriteName += '_LJ'
-                
+                if(!this.isRoad){
+                    spriteName += '_RJ'
+                }else{
+                    spriteName += '_LJ'
+                }                
             }else{
                 spriteName += '_RJ'
             }
@@ -147,6 +172,7 @@ class Model{
             requireRotate = true;
             degree = 90
         }
+
         return {
             requireRotate,
             spriteName, 
@@ -179,7 +205,16 @@ class Model{
         if(spriteName){
             let sprite = getSprite(this.x, this.y ,this.height, this.width, spriteName)
             if(this instanceof Person){
-                sprite = this.drawPerson(sprite)
+                if(this.isFighting){
+                    sprite = this.drawFightPose(sprite)
+                }else if(this.hasFalled){
+                    sprite = this.drawFalledPose(sprite)
+                }else if(this.isDead){
+                    sprite = this.drawDeadPose(sprite)
+                }
+                else{
+                    sprite = this.drawPerson(sprite)
+                }
             }else if(this instanceof Car){
                 if(this.state.orientation === 'vertical'){
                     dividingFactor.x = this.state.recentAction === 40 ? 1 : 1

@@ -841,8 +841,8 @@ let quadrant1 = {
             height : 60,
             width : 60,
             isRoad : false,
-            isRightJunction : true,
-            isLeftJunction : false,
+            isRightJunction : false,
+            isLeftJunction : true,
             orientation: 'vertical',
             side: 'right'
         },
