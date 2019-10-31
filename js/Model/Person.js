@@ -19,6 +19,7 @@ class Person extends Model{
         this.isFighting = false
         this.isHitting = false
         this.hasTurned = false
+        this.isTurning = false
         this.onPursuit = false
         this.hasFalled = false
         this.isDead = false
@@ -31,7 +32,19 @@ class Person extends Model{
             kill : 0,
             policeKills : 0
         }
+        this.recentJunction = {
+            isRightJunction : false,
+            isLeftJunction : false
+        }
         this.resetState()
+        this.initJunctionBuffer()
+    }
+
+    initJunctionBuffer = () =>{
+        this.recentJunction = {
+            isRightJunction : false,
+            isLeftJunction : false
+        }
     }
 
     resetState = () =>{
@@ -243,7 +256,7 @@ class Person extends Model{
         return closeCar
     }
 
-    pursuitPlayer = (player, updatePersonPath) =>{
+    pursuitPlayer = (player, updateObjPath) =>{
         if(this.isPolice && this.onMove){
             if(player.state.pursuit > 0 && player.state.health > 0){
                 let xDiff = player.x - this.x
@@ -251,12 +264,12 @@ class Person extends Model{
                 this.direction = Math.atan2(yDiff, xDiff) * 180 / Math.PI + 90
                 this.move()
             }else{
-                this.move(updatePersonPath)
+                this.move(updateObjPath)
             }  
         }
     }
 
-    movePerson = (degree, updatePersonPath) =>{
+    movePerson = (degree, updateObjPath) =>{
         let friction = this.friction
         if(!this.isPlayer){
             friction = this.pedesterianFriction
@@ -267,14 +280,8 @@ class Person extends Model{
             this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (1- friction);
             this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- friction);
         }
-        
-
-        
-        if(updatePersonPath){
-            setTimeout(() =>{
-                updatePersonPath(this)        
-            }, 1500)
-            
+        if(updateObjPath){
+            updateObjPath(this)             
         }
     }
 
@@ -332,14 +339,14 @@ class Person extends Model{
     }
 
 
-    move=(updatePersonPath)=>{
+    move=(updateObjPath)=>{
         let degreeOffSet = 270 
         
         if(!this.isPlayer){
             if(this.state.health > 0){
                 let degree = this.direction
                 if(this.state.health > 0){
-                    this.movePerson(degree-90, updatePersonPath)
+                    this.movePerson(degree-90, updateObjPath)
                 }else{
                     this.updateCollisionPosition = false
                 }
@@ -354,7 +361,7 @@ class Person extends Model{
                     if(this.friction > 0){
                         this.friction -= 0.03
                     }
-                    this.movePerson(degree, updatePersonPath)
+                    this.movePerson(degree, updateObjPath)
                 }else{
                     this.onMove = false;
                     this.friction = 0.9

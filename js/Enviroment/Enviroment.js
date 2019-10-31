@@ -32,6 +32,10 @@ class Environment{
         this.playerVelocity = 1.5
         this.playersCar;
         this.pursuitDuration = 500
+        this.tempPath = {
+            isRightJunction : false,
+            isLeftJunction : false
+        }
         this.init()
     }   
 
@@ -58,8 +62,10 @@ class Environment{
         }
         this.changeDirState = {
             tick : 0,
-            tickPerFrame : 120
+            tickPerFrame : 60,
+            carTickPerFrame : 50
         }
+
     }
 
     // fas fa-bolt
@@ -125,7 +131,7 @@ class Environment{
         this.player.state.health = 10
         // this.player.state.pursuit = 2;
         if(!this.player.currentPathId){
-            this.player.currentPath = this.getPersonPath(this.player);
+            this.player.currentPath = this.getObjPath(this.player);
         }
         this.content.player.push(player)
         this.showPlayersHeart()
@@ -231,11 +237,12 @@ class Environment{
             this.policeVehicleState.timer = 0
             if(this.content.car.length < this.policeVehicleState.maxVehicle){
                 let {spawnPath, side} = this.getObjectsSpawnPath('car')
+                
                 if(spawnPath){
                     let direction = this.getMoveDir(side)
                     let carWidth = 80;
                     let carHeight = 40;
-                    let car = new Car(this.context, spawnPath.x, spawnPath.y, carWidth, carHeight, direction, true, true, 1)
+                    let car = new Car(this.context, spawnPath.x, spawnPath.y + 20, carWidth, carHeight, direction, true, true, 1)
                     this.content.car.push(car)
                 }
             }
@@ -263,38 +270,103 @@ class Environment{
         }
     }
 
-    getPersonPath = (person) =>{
+    getObjPath = (obj) =>{
         let currentPath =this.content.path.filter(pathItem => {
-            return this.checkCollision(pathItem, person)
+            return this.checkCollision(pathItem, obj)
         })[0]
         return currentPath
     }
 
-    updatePersonPath =(person) =>{
-        if(person.currentPath){
-            let currentPath = person.currentPath
-            let currentPathId = currentPath.id
-            let nextPath = this.content.path[currentPathId + 1]
-            if(this.checkCollision(nextPath, person)){
+    changeDirection = (obj) =>{
+        let currentPath = obj.currentPath
+        if(!obj.isPlayer && !obj.isPlayerCar){   
+            if(currentPath.isRightJunction || currentPath.isLeftJunction){
+                let collisionPlace = this.getCollisionPlace(currentPath, obj)
+                let direction ;
+                switch(collisionPlace){
+                    case 'top':
+                        if(obj.direction === 180){
+                            direction = Math.random() > 0.5 ? 270: 90
+                        }else if(obj.direction === 90){
+                            direction = Math.random() > 0.5 ? 0: 180
+                        }else if(obj.direction === 270){
+                            direction = Math.random() > 0.5 ? 0: 180
+                        }
+                        break;
+                    
+                    case 'left':
+                        if(obj.direction === 0){
+                            direction = Math.random() > 0.5 ? 270: 90
+                        }else if(obj.direction === 90){
+                            direction = Math.random() > 0.5 ? 0: 180
+                        }else if(obj.direction === 180){
+                            direction = Math.random() > 0.5 ? 270: 90
+                        }
+                        break;
+
+                    case 'right':
+                        if(obj.direction === 0){
+                            direction = Math.random() > 0.5 ? 270: 90
+                        }else if(obj.direction === 90){
+                            direction = Math.random() > 0.5 ? 0: 180
+                        }else if(obj.direction === 180){
+                            direction = Math.random() > 0.5 ? 270: 90
+                        }
+                        break;
+
+                    case 'bottom':
+                        if(obj.direction === 0){
+                            direction = Math.random() > 0.5 ? 270: 90
+                        }else if(obj.direction === 270){
+                            direction = Math.random() > 0.5 ? 0: 180
+                        }else if(obj.direction === 90){
+                            direction = Math.random() > 0.5 ? 0: 180
+                        }
+                        break                    
+                }
+                
+                
+                    if(collisionPlace){
+                        let recentJunction = obj.recentJunction
+                        if(recentJunction.isRightJunction !== currentPath.isRightJunction || recentJunction.isLeftJunction !== currentPath.isLeftJunction){
+                            if(direction){
+                                obj.direction = direction
+                                recentJunction.isRightJunction = obj.currentPath.isRightJunction
+                                recentJunction.isLeftJunction = obj.currentPath.isLeftJunction
+                            }
+                            
+                        }                    
+                    }
+                }
+            }
+        }
+
+    updateObjPath =(obj) =>{
+        if(obj.currentPath){
+
+            let nextPath = this.content.path[obj.currentPath.id + 1]
+
+            let currentPath;
+            if(this.checkCollision(nextPath, obj)){
                 currentPath = nextPath
             }else{
-                currentPath = this.getPersonPath(person)
+                currentPath = this.getObjPath(obj)
             }
-            person.currentPath = currentPath
+            if(currentPath){
+                obj.currentPath = currentPath
+            }
+            if(obj.currentPath.isLeftJunction || obj.currentPath.isRightJunction){
+                this.changeDirection(obj)
+            }else{
+                obj.initJunctionBuffer()
+            }
 
-            if(currentPath && !person.isPlayer){
-                this.changeDirState.tick++
-                if(this.changeDirState.tick > this.changeDirState.tickPerFrame){
-                    this.changeDirState.tick = 0
-                    person.direction = this.getPersonDirection(currentPath, person.direction)
-                }                
-            }
         }else{
-            person.currentPath = this.getPersonPath(person)
+            obj.currentPath = this.getObjPath(obj)
         }
     }
 
-    getPersonDirection = (path, currentDirection) =>{
+    getObjDirection = (path, currentDirection) =>{
         let direction = currentDirection
         if(path.isRightJunction){
             switch(currentDirection){
@@ -475,10 +547,12 @@ class Environment{
                     }
                 }
                 else{
+                    
                     this.updateCollidedPlace(item, obj)                
                 }
                 
             }
+            
             return true
         }
         return false;
@@ -737,14 +811,14 @@ class Environment{
         return true
     }
 
-    updateVehicleMove = () =>{
+    updateCarMove = () =>{
         this.content.car.map( (car, index ) =>{
             if(car.onMove){
                 if(!this.isInsideRenderZone(car)){
                     this.content.car.splice(index, 1)
                 }
                 else if(!this.isPlayerCar){
-                    car.move()
+                    car.move(this.updateObjPath)
                 }
                 this.hasCollided(car)
             }
@@ -757,11 +831,11 @@ class Environment{
                 this.content.pedesterian.splice(index, 1)
             }else{
                 if(!pedesterian.pedesterianState.hasFallen && pedesterian.state.health > 0){
-                    pedesterian.move(this.updatePersonPath)
+                    pedesterian.move(this.updateObjPath)
                     let checkRange = 10
                     
                     if(pedesterian.isPolice && this.player.state.pursuit > 0 && this.isPlayerNearby(pedesterian, checkRange)){
-                        pedesterian.pursuitPlayer(this.player, this.updatePersonPath)
+                        pedesterian.pursuitPlayer(this.player, this.updateObjPath)
                     }
                 }
                 this.hasCollided(pedesterian)
@@ -797,7 +871,7 @@ class Environment{
                 })
         })
         this.updatePedesterianMove()
-        this.updateVehicleMove()
+        this.updateCarMove()
     }
 
     update = () =>{
@@ -814,7 +888,7 @@ class Environment{
         }else{
             if(!this.hasCollided(this.player)){ 
                 this.updatePlayerAction()
-                this.player.move(this.updatePersonPath)
+                this.player.move(this.updateObjPath)
             }
         }
         

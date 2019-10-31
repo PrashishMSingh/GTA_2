@@ -9,6 +9,7 @@ class Car extends Model{
         this.model = model
         this.updateCollisionPosition = true
         this.isPlayerCar = false
+        this.isTurning = false
 
         this.buffer = []
         this.state = {
@@ -18,7 +19,16 @@ class Car extends Model{
             orientation: 'horizontal',
             isTurning : false
         }
+        
         this.setModelAttrib()
+        this.initJunctionBuffer()
+    }
+
+    initJunctionBuffer = () =>{
+        this.recentJunction = {
+            isRightJunction : false,
+            isLeftJunction : false
+        }
     }
 
     setModelAttrib = () =>{
@@ -57,19 +67,6 @@ class Car extends Model{
         }
     }
 
-    getClosestDegree = (degree) =>{
-        if(degree > 270){
-            return 360
-        }else if(degree > 180){
-            return 270
-        }else if(degree > 90){
-            return 180
-        }else if(degree > 0){
-            return 90
-        }
-
-    }
-
     changeDirection = () =>{
         let [leftCode, rightCode] = [37, 39]
         let offSet = 270
@@ -96,7 +93,7 @@ class Car extends Model{
         this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- this.friction);
     }
 
-    move = () =>{
+    move = (updateObjPath) =>{
         if(this.isPlayerCar){
             if(!this.state.isTurning){
                 this.state.degree = Math.abs(getMoveDirection(this.buffer)) 
@@ -122,6 +119,10 @@ class Car extends Model{
                     this.friction -= 0.01
                 }
                 this.moveCar(this.direction-90)
+               
+                if(updateObjPath){
+                    updateObjPath(this)    
+                }
             }else{
                 this.onMove = false
                 this.setModelAttrib()
