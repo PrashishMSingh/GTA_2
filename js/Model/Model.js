@@ -74,7 +74,7 @@ class Model{
             
         }
         else if(this instanceof Car){
-            spriteName = 'car'
+            spriteName = 'car_'+ this.model
             this.image.src = './images/gta_3_sprite.png'
             requireRotate = true;
             degree = this.direction -90

@@ -171,12 +171,10 @@ let quadrant1 = {
             y : 290,
             width : 80,
             height : 40,
-            velocity : 5,
             direction : 90,
-            maxSpeed : 10,
             onMove :false,
+            isPoliceVehicle : false,
             model : 1,
-            isPoliceVehicle : false
         },
 
         {
@@ -184,12 +182,10 @@ let quadrant1 = {
             y : 370,
             width : 80,
             height : 40,
-            velocity : 5,
             direction : 90,
-            maxSpeed : 10,
-            onMove :false,
+            onMove :false,            
+            isPoliceVehicle : false,
             model : 2,
-            isPoliceVehicle : false
         },
 
         {
@@ -197,12 +193,10 @@ let quadrant1 = {
             y : 530,
             width : 80,
             height : 40,
-            velocity : 5,
             direction : 90,
-            maxSpeed : 10,
-            model : 3,
             onMove :false,
-            isPoliceVehicle : false
+            isPoliceVehicle : false,
+            model : 3
         },
     ],
 

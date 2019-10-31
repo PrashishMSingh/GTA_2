@@ -238,6 +238,7 @@ class Person extends Model{
                 this.isActive = false   
             }
             closeCar.updateCollisionPosition = false;
+            closeCar.isPlayerCar = true
         }    
         return closeCar
     }

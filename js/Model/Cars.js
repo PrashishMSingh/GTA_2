@@ -1,17 +1,15 @@
 class Car extends Model{
 
-    constructor(context, x, y, width, height, speed, velocity, direction, maxSpeed, onMove, isPoliceVehicle, changedTurn){
+    constructor(context, x, y, width, height, direction, onMove, isPoliceVehicle, model){
         super(context, x, y, width, height)
-        this.velocity = velocity;
-        this.speed = speed;
         this.direction = direction;
-        this.maxSpeed = maxSpeed;
-        this.friction = 0.8
         this.isActive = false,
         this.onMove = onMove,
         this.isPoliceVehicle = isPoliceVehicle
-        this.changedTurn = false
+        this.model = model
         this.updateCollisionPosition = true
+        this.isPlayerCar = false
+
         this.buffer = []
         this.state = {
             tick : 0,
@@ -19,6 +17,30 @@ class Car extends Model{
             nextSpriteGap : 160,
             orientation: 'horizontal',
             isTurning : false
+        }
+        this.setModelAttrib()
+    }
+
+    setModelAttrib = () =>{
+        if(this.isPoliceVehicle){
+            this.velocity = 5
+            this.friction = 0.6
+        }
+        switch(this.model){
+            case 1:
+                this.friction = 0.8
+                this.velocity = 4
+                break
+
+            case 2:
+                this.friction = 0.6
+                this.velocity = 5
+                break
+
+            case 3:
+                this.friction = 0.4
+                this.velocity = 6
+                break
         }
     }
 
@@ -69,23 +91,43 @@ class Car extends Model{
 
     }
 
-    move = () =>{
-        if(!this.state.isTurning){
-           this.state.degree = Math.abs(getMoveDirection(this.buffer)) 
-        }
+    moveCar = (degree) =>{
+        this.x += this.velocity * Math.cos(degree * Math.PI / 180) * (1- this.friction);
+        this.y += this.velocity * Math.sin(degree * Math.PI / 180) * (1- this.friction);
+    }
 
-        if(this.state.degree || this.state.degree === 0){
-            if(this.friction > 0){
-                this.friction -= 0.01
+    move = () =>{
+        if(this.isPlayerCar){
+            if(!this.state.isTurning){
+                this.state.degree = Math.abs(getMoveDirection(this.buffer)) 
+             }
+            if(this.state.degree || this.state.degree === 0){
+                if(this.friction > 0){
+                    this.friction -= 0.01
+                }
+                this.onMove = true
+                this.moveCar(this.state.degree)                
+                this.updateCollisionPosition = false
+                this.changeDirection()
+            }else{
+                this.updateCollisionPosition = true
+                this.onMove = false
+                this.setModelAttrib()
             }
-            this.x += this.velocity * Math.cos(this.state.degree * Math.PI / 180) * (1 - this.friction);
-            this.y += this.velocity * Math.sin(this.state.degree * Math.PI / 180) * (1 - this.friction);
-            this.onMove = true
-            this.changeDirection()
-        }else{
-            this.friction = 0.8
-            this.onMove = false
         }
+        
+        else{
+            if(this.onMove && (this.direction || this.direction === 0)){
+                if(this.friction > 0){
+                    this.friction -= 0.01
+                }
+                this.moveCar(this.direction-90)
+            }else{
+                this.onMove = false
+                this.setModelAttrib()
+            }
+        }
+        
     }
     
 }

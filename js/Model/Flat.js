@@ -53,7 +53,7 @@ class Flat{
 
     }
 
-    changePerspective = (player) =>{
+    buildingView = (player) =>{
         let xGap = -this.xFloorHeight;
         let yGap = -this.yFloorHeight;
         
@@ -93,7 +93,10 @@ class Flat{
         else{
             this.xFloorHeight = xGap;
         }
-        
+    }
+
+    changePerspective = (player, quadrantIndex) =>{
+        this.buildingView(player)
         this.create()        
         this.draw(player)
     }

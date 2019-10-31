@@ -47,6 +47,11 @@ class Environment{
             timer : 0,
             maxPedesterian : 20
         },
+        this.policeVehicleState = {
+            generationTime : 100,
+            timer : 0,
+            maxVehicle : 8
+        }
         this.coolDownState = {
             tick : 0,
             tickPerFrame : 500
@@ -148,27 +153,61 @@ class Environment{
         return['left', 'top', 'right', 'down'][index]
     }
 
-    getPedestrianSpawnPath = () =>{
-        let index = this.getQuadrantIndex()
-        let quadrantDataList = this.quadrantDataList[index.row][index.col]
+    checkPathSide= (path) =>{
+        
         let endLeftSides = Math.abs(this.left)
         let endTopSides = Math.abs(this.top)
-
         let endRightSides = endLeftSides + SCREEN_WIDTH
         let endBottomSides = endTopSides + SCREEN_HEIGHT
+        
+        let side;
+        if(path.x < endLeftSides && path.x + path.width > endLeftSides &&path.orientation === 'horizontal'){
+            side = 0
+        }else if(path.y < endTopSides && path.y + path.height > endTopSides && path.orientation === 'vertical'){
+            side = 1
+        }else if(path.x < endRightSides && path.x + path.width > endRightSides && path.orientation === 'horizontal'){
+            side = 2
+        }else if(path.y < endBottomSides && path.y + path.height > endBottomSides && path.orientation === 'vertical'){
+            side = 3
+        }
+        return side
+    }
 
-        let leftSidePaths = quadrantDataList.path.filter(path => !path.isRoad && path.x < endLeftSides && path.x + path.width > endLeftSides &&path.orientation === 'horizontal')
-        let topSidePaths = quadrantDataList.path.filter(path => !path.isRoad && path.y < endTopSides && path.y + path.height > endTopSides && path.orientation === 'vertical')
+    getObjectsSpawnPath = (type) =>{
         
-        let rightSidePaths = quadrantDataList.path.filter(path => !path.isRoad && path.x < endRightSides && path.x + path.width > endRightSides && path.orientation === 'horizontal')
-        let bottomSidePaths = quadrantDataList.path.filter(path => !path.isRoad && path.y < endBottomSides && path.y + path.height > endBottomSides && path.orientation === 'vertical')
-        
-        let pathSideList = [leftSidePaths, topSidePaths, rightSidePaths, bottomSidePaths]
+        let index = this.getQuadrantIndex()
+        let quadrantDataList = this.quadrantDataList[index.row][index.col]
+
         let selectedPath = []
         let spawnedIndex;
-        
-        spawnedIndex = Math.round(Math.random() * pathSideList.length)
 
+        let leftSides  = []
+        let rightSides = []
+        let bottomSides = []
+        let topSides = []
+
+        let pathSideList = [leftSides, topSides, rightSides, bottomSides]
+        
+        if(type === 'pedesterian'){
+            quadrantDataList.path.map(path => {
+                if(!path.isRoad){
+                    let side = this.checkPathSide(path)
+                    if(side){
+                        pathSideList[side].push(path)
+                    }
+                }
+            })
+        }else{
+            quadrantDataList.path.map(path => {
+                if(path.isRoad){
+                    let side = this.checkPathSide(path)
+                    if(side){
+                        pathSideList[side].push(path)
+                    }
+                }                
+            })
+        }        
+        spawnedIndex = Math.round(Math.random() * pathSideList.length)
         if(pathSideList[spawnedIndex]){
             selectedPath = pathSideList[spawnedIndex]
         }
@@ -176,30 +215,42 @@ class Environment{
         return { spawnPath : selectedPath[pathIndex], side : this.spawnedAt(spawnedIndex)}
     }
 
+    getMoveDir = (spawnSide) =>{
+        return{
+            top : 180,
+            left : 90,
+            right : 270,
+            down : 0
+        }[spawnSide]
+    }
+
+
+    generatePoliceVehicle = () =>{
+        this.policeVehicleState.timer++
+        if(this.policeVehicleState.timer > this.policeVehicleState.generationTime){
+            this.policeVehicleState.timer = 0
+            if(this.content.car.length < this.policeVehicleState.maxVehicle){
+                let {spawnPath, side} = this.getObjectsSpawnPath('car')
+                if(spawnPath){
+                    let direction = this.getMoveDir(side)
+                    let carWidth = 80;
+                    let carHeight = 40;
+                    let car = new Car(this.context, spawnPath.x, spawnPath.y, carWidth, carHeight, direction, true, true, 1)
+                    this.content.car.push(car)
+                }
+            }
+        }
+
+    }
+
     generatePedesterian = () =>{
         this.pedesterianState.timer+=1
         if(this.pedesterianState.timer > this.pedesterianState.generationTime){
             this.pedesterianState.timer = 0
             if(this.content.pedesterian.length < this.pedesterianState.maxPedesterian){
-                let {spawnPath, side} = this.getPedestrianSpawnPath()
+                let {spawnPath, side} = this.getObjectsSpawnPath('pedesterian')
                 if(spawnPath){
-                    let direction;
-                    switch(side){
-                        case 'top':
-                            direction = 180
-                            break;
-                        
-                        case 'left':
-                            direction = 90
-                            break;
-                        
-                        case 'right' : 
-                            direction = 270
-                            break;
-                        
-                        case 'down':
-                            direction = 0
-                    }
+                    let direction = this.getMoveDir(side)
                     let pedesterian = new Person(this.context, spawnPath.x, spawnPath.y, 30, 30, 0.5, false, direction)
                     pedesterian.onMove = true
                     pedesterian.isMob = Math.random() < this.createMobProb ? true : false
@@ -385,7 +436,6 @@ class Environment{
                         this.player.state.pursuit = 1
                     }
                     obj.state.health -= 1
-                    console.log(obj.state.health)
                     obj.checkIsDead()
                     obj.hasFalled = false
                     item.updateCollisionPosition = true
@@ -486,6 +536,7 @@ class Environment{
                     this.player.isActive = true
                     this.player.updateCollisionPosition = true
                     this.playersCar.updateCollisionPosition = true
+                    this.playersCar.isPlayerCar = false
                     this.playersCar = undefined                    
                 }
             }
@@ -548,22 +599,10 @@ class Environment{
         let isCloseToCar = false
         let closeCar;
         this.content['car'].map(car =>{
-            
-            // car left to the player
-            let checkBottomDistance = Math.abs(this.player.y - car.y - car.height);
-            let checkTopDistance = Math.abs(this.player.y + this.player.height - car.y);
-            let minDiff = car.width + this.player.width
-
-            let leftAndRightCondition = this.player.x > car.x  && this.player.x+this.player.width < car.x+car.width
-            let upAndDownCondition = this.player.y > car.y && this.player.y + this.player.height < car.y + car.height
-            
-            let getInCondition = car.state.orientation === 'horizontal' ? leftAndRightCondition : upAndDownCondition
-
-            if(getInCondition){
-                if(checkTopDistance < minDiff || checkBottomDistance < minDiff){
-                    isCloseToCar = true;
-                    closeCar = car
-                }
+            let searchRange = 1.5
+            if(this.isNearBy(this.player, car, this.player.width * searchRange)){
+                isCloseToCar = true;
+                closeCar = car
             }
         })
         return {
@@ -628,7 +667,6 @@ class Environment{
         
     }
 
-   
     checkPursuit = () =>{
         if(this.player.state.pursuit){
             this.coolDownState.tick ++
@@ -660,30 +698,62 @@ class Environment{
 
     // Move player environment
     move = () =>{
-        let screenShiftSpeed = (1 - this.player.friction) * this.player.velocity
-        if(this.player.x + this.left > SCREEN_WIDTH/2 && -this.left < this.canvas.width - SCREEN_WIDTH){
+        
+        let obj = this.player
+        let screenShiftSpeed = Math.abs(obj.velocity * (1 - obj.friction))
+        if(this.playersCar){
+            obj = this.playersCar
+            screenShiftSpeed = Math.abs(obj.velocity * (1 - obj.friction))* 2
+        }
+
+        if(obj.x + this.left > SCREEN_WIDTH/2 && -this.left < this.canvas.width - SCREEN_WIDTH){
             this.left -= screenShiftSpeed
         }
-        if(this.player.y + this.top> SCREEN_HEIGHT/2 && -this.top < this.canvas.height - SCREEN_HEIGHT){
+        if(obj.y + this.top> SCREEN_HEIGHT/2 && -this.top < this.canvas.height - SCREEN_HEIGHT){
             this.top  -= screenShiftSpeed
         }
 
-        if(this.player.y + this.top < SCREEN_HEIGHT/2 && -this.top > 0){
+        if(obj.y + this.top < SCREEN_HEIGHT/2 && -this.top > 0){
             this.top  += screenShiftSpeed  
         }
 
-        if(this.player.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
+        if(obj.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
             this.left  += screenShiftSpeed
-        }        
+        }      
+
         this.generatePedesterian()
+        this.generatePoliceVehicle()
+    }
+
+    isInsideRenderZone = (obj) =>{
+        let condition1 =obj.x > Math.abs(this.left) + SCREEN_WIDTH * 2
+        let condition2 =obj.y > Math.abs(this.top) + SCREEN_HEIGHT * 2
+        let condition3 = obj.y + obj.height <  Math.abs(this.top) - SCREEN_WIDTH * 2
+        let condition4 = obj.x + obj.width < Math.abs(this.left) - SCREEN_WIDTH * 2
+        
+        if(condition1 || condition2 || condition3 || condition4){
+            return false
+        }
+        return true
+    }
+
+    updateVehicleMove = () =>{
+        this.content.car.map( (car, index ) =>{
+            if(car.onMove){
+                if(!this.isInsideRenderZone(car)){
+                    this.content.car.splice(index, 1)
+                }
+                else if(!this.isPlayerCar){
+                    car.move()
+                }
+                this.hasCollided(car)
+            }
+        })
     }
 
     updatePedesterianMove = () =>{
         this.content.pedesterian.map((pedesterian, index) =>{
-            let condition1 =pedesterian.x > Math.abs(this.left) + SCREEN_WIDTH * 2
-            let condition2 = pedesterian.y > Math.abs(this.top) + SCREEN_HEIGHT * 2
-
-            if(condition1 || condition2 || pedesterian.isDead){
+            if(!this.isInsideRenderZone(pedesterian)|| pedesterian.isDead){
                 this.content.pedesterian.splice(index, 1)
             }else{
                 if(!pedesterian.pedesterianState.hasFallen && pedesterian.state.health > 0){
@@ -696,18 +766,7 @@ class Environment{
                 }
                 this.hasCollided(pedesterian)
             }
-        })
-
-        // this.content.pedesterian = this.content.pedesterian.filter(pedesterian=>{
-        //     let condition1 =pedesterian.x > Math.abs(this.left) + SCREEN_WIDTH * 2
-        //     let condition2 = pedesterian.y > Math.abs(this.top) + SCREEN_HEIGHT * 2
-
-        //     if(condition1 || condition2 || pedesterian.isDead){
-        //         console.log(' : ', condition1 , " : ", condition2, " : ", indivisual.isDead)
-        //         return false
-        //     }return true
-        // })
-        
+        })        
     }
 
     draw = () =>{
@@ -724,7 +783,7 @@ class Environment{
             
             this.content[key].map(item =>{
                 if(key === 'building'){
-                    item.floorList.map(flat => flat.changePerspective(this.player))
+                    item.floorList.map(flat => flat.changePerspective(this.player, this.getQuadrantIndex))
                 }
                 if(key === 'player'){
                     if(this.content[key].isActive){
@@ -738,6 +797,7 @@ class Environment{
                 })
         })
         this.updatePedesterianMove()
+        this.updateVehicleMove()
     }
 
     update = () =>{
@@ -745,11 +805,11 @@ class Environment{
            
         if(this.playersCar) {
             if(!this.hasCollided(this.playersCar)){ 
-                this.player.velocity = this.playersCar.velocity  
-                this.player.friction = this.playersCar.friction          
                 this.playersCar.move()  
                 this.player.x = this.playersCar.x
                 this.player.y = this.playersCar.y
+                this.player.velocity = this.playersCar.velocity  
+                this.player.friction = this.playersCar.friction      
             }
         }else{
             if(!this.hasCollided(this.player)){ 

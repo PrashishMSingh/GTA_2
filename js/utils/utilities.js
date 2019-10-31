@@ -81,7 +81,9 @@ getMoveDirection = (buffer) =>{
 // [0 ,25, 55,88, 125, 155, 188, 225, 255, 288],
 getSprite=(x, y, width, height, item)=>{
     let spriteData = {
-        'car' : {sx : 0, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
+        'car_1' : {sx : 0, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
+        'car_2' : {sx : 185, sy : 115, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
+        'car_3' : {sx : 185, sy : 210, sw : 200, sh: 80, dx : x, dy: y, dw : 100, dh : 50},
 
         'player' : {sx : 10, sy : 10, sw : 90, sh: 90, dx : x, dy:y, dw : width, dh : height},
 
