@@ -43,7 +43,7 @@ class Environment{
 
     init = () =>{
         this.playerDir;
-        this.createEnvironment()
+        this.updateEnvironment()
         this.createQuadrant()
         this.initiateEventListener()
         this.top = 0
@@ -60,7 +60,7 @@ class Environment{
         }
         this.coolDownState = {
             tick : 0,
-            tickPerFrame : 500
+            tickPerFrame : 300
         }
         this.changeDirState = {
             tick : 0,
@@ -120,6 +120,99 @@ class Environment{
         this.moneyBar.innerText = this.player.state.money
     }
 
+    onSideQuadrants = (index) =>{
+        let sideQuadrants = {}
+        let condition1 = this.currentIndex[index] >= 1;
+        
+        // check if index is a col or a row
+        let condition2 = index ? this.currentIndex[index] < environmentData.colCount-1 : this.currentIndex[index] < environmentData.rowCount-1;
+        
+        if(!condition1){
+            index? sideQuadrants['left'] = false : sideQuadrants['top'] = false;
+        }
+        if(!condition2){
+            index? sideQuadrants['right'] = false : sideQuadrants['bottom'] = false;
+        }
+        
+        return sideQuadrants;
+    }
+
+    updateEnvironment = () =>{
+        this.quadrantDataList = []
+        let noOfQuadrant = 2
+        let quadrantCount = (environmentData.quadrantRenderRange * noOfQuadrant);
+        let rowInd = 0;
+        let colInd = 1;
+
+        let rowEmptySide = this.onSideQuadrants(rowInd)
+        let colEmptySide = this.onSideQuadrants(colInd)
+        
+        this.rowCount = Object.keys(rowEmptySide).length ? quadrantCount : quadrantCount + 1;
+        this.colCount = Object.keys(colEmptySide).length ? quadrantCount : quadrantCount + 1;
+        
+
+        this.canvas.setAttribute('width', SCREEN_WIDTH * this.colCount)
+        this.canvas.setAttribute('height', SCREEN_HEIGHT * this.rowCount)
+
+        let rowStart = this.currentIndex[0] ? this.currentIndex[0] - 1 : 0
+        let colStart = this.currentIndex[1] ? this.currentIndex[1] -1 : 0
+        
+        for(let row = rowStart; row < this.rowCount; row++){
+            if(quadrantData[row]){
+                let vQuadrant = []
+                for(let col = colStart; col < this.colCount; col ++){
+                    if(quadrantData[row][col]){
+                        vQuadrant.push(quadrantData[row][col])      
+                    }               
+                }
+                this.quadrantDataList.push(vQuadrant) 
+            }   
+                       
+        }
+    }
+
+    // add content from all the quadrants in a single list for collision
+    updateContent = (content) =>{
+        Object.keys(content).map(key =>{
+            this.content[key] = this.content[key].concat(content[key])
+        })
+        
+    }
+
+    createQuadrant = () =>{
+        this.quadrantDataList.map((quadrantData, i) =>{
+            let tempList = []
+            quadrantData.map((data, j) =>{
+                let quadrant = new Quadrant(this.canvas, this.context, data, this.player)
+                this.updateContent(quadrant.create(), i, j)
+                tempList.push(quadrant)
+            })
+            this.quadrantList.push(tempList)
+        })
+        
+    }
+
+    // get the index of the quadrant the user is currently at
+    getQuadrantIndex = () =>{
+        let col = 0;
+        let row = 0
+        for(var i = 0; i< this.quadrantList.length; i++){
+            if(this.player.x >SCREEN_WIDTH * i && this.player.x < SCREEN_WIDTH * (i + 1)){
+                col = i;
+            }   
+            if(this.player.y > SCREEN_HEIGHT * i && this.player.y < SCREEN_HEIGHT * (i + 1)){
+                row = i
+            }
+        }
+        if(row !== this.currentIndex[0] || col !== this.currentIndex[1]){
+            this.currentIndex[0] = row
+            this.currentIndex[1] = col
+            this.updateEnvironment()
+            
+        }
+        return {row : row, col : col}
+    }
+
     /*
     * @param car : this car the player has currently entered
     * Sets the reference to the car the user is currently in for the enviroment
@@ -140,21 +233,6 @@ class Environment{
         this.showPlayerBalance()
         this.showPlayerStamina()
         this.showPursuitStar()
-    }
-
-    // get the index of the quadrant the user is currently at
-    getQuadrantIndex = () =>{
-        let col = 0;
-        let row = 0
-        for(var i = 0; i< this.quadrantList.length; i++){
-            if(this.player.x >SCREEN_WIDTH * i && this.player.x < SCREEN_WIDTH * (i + 1)){
-                col = i;
-            }   
-            if(this.player.y > SCREEN_HEIGHT * i && this.player.y < SCREEN_HEIGHT * (i + 1)){
-                row = i
-            }
-        }
-        return {row : row, col : col}
     }
 
     spawnedAt = (index) =>{
@@ -182,7 +260,6 @@ class Environment{
     }
 
     getObjectsSpawnPath = (type) =>{
-        
         let index = this.getQuadrantIndex()
         let quadrantDataList = this.quadrantDataList[index.row][index.col]
 
@@ -452,7 +529,7 @@ class Environment{
     }
 
     changeObjectDirection = (obj,item, collisiontType) =>{
-        if(obj instanceof Person || obj instanceof Car){
+        if(obj instanceof Person){
             if(!obj.isPlayer || !obj.isPlayerCar){
                 let direction = obj.direction
                 if(collisiontType == 'horizontal'){
@@ -706,61 +783,7 @@ class Environment{
         }
     }
 
-    onSideQuadrants = (index) =>{
-        let sideQuadrants = {}
-        let condition1 = this.currentIndex[index] > 1;
-        // check if index is a col or a row
-        let condition2 = index ? this.currentIndex[index] < environmentData.colCount-1 : this.currentIndex[index] < environmentData.rowCount-1;
-        
-        if(!condition1){
-            index? sideQuadrants['left'] = false : sideQuadrants['top'] = false;
-        }
-        if(!condition2){
-            index? sideQuadrants['right'] = false : sideQuadrants['bottom'] = false;
-        }
-        return sideQuadrants;
-    }
-
-    createEnvironment = () =>{
-        let quadrantCount = (environmentData.quadrantRenderRange * 2) + 1;
-        let rowInd = 0;
-        let colInd = 1;
-        
-        this.rowCount = this.onSideQuadrants(rowInd) ? quadrantCount - 1 : quadrantCount;
-        this.colCount = this.onSideQuadrants(colInd) ? quadrantCount - 1 : quadrantCount;
-
-        this.canvas.setAttribute('width', SCREEN_WIDTH * this.colCount)
-        this.canvas.setAttribute('height', SCREEN_HEIGHT * this.rowCount)
-
-        for(let row = 0; row < this.rowCount; row++){
-            let vQuadrant = []
-            for(let col = 0; col < this.colCount; col ++){
-               vQuadrant.push(quadrantData[row][col]) 
-            }
-            this.quadrantDataList.push(vQuadrant)            
-        }
-    }
-
-    // add content from all the quadrants in a single list for collision
-    updateContent = (content) =>{
-        Object.keys(content).map(key =>{
-            this.content[key] = this.content[key].concat(content[key])
-        })
-        
-    }
-
-    createQuadrant = () =>{
-        this.quadrantDataList.map((quadrantData, i) =>{
-            let tempList = []
-            quadrantData.map((data, j) =>{
-                let quadrant = new Quadrant(this.canvas, this.context, data, this.player)
-                this.updateContent(quadrant.create(), i, j)
-                tempList.push(quadrant)
-            })
-            this.quadrantList.push(tempList)
-        })
-        
-    }
+    
 
     checkPursuit = () =>{
         if(this.player.state.pursuit){
@@ -845,7 +868,6 @@ class Environment{
                     let checkRange = 10
                     if(car.isPoliceVehicle && this.player.state.pursuit > 0 && this.isPlayerNearby(car, checkRange)){
                         if(!this.player.isActive){
-                            console.log('here')
                             car.pursuitPlayer(this.player, this.updateObjPath)
                         }                        
                     }

@@ -14,8 +14,10 @@ class Flat{
     }
 
     init = () =>{
-        this.minFloorHeight = 5;
-        this.maxFloorHeight = 30
+        // 5
+        this.minFloorHeight = 1;
+        // 30
+        this.maxFloorHeight = 1
         this.yFloorHeight = - this.maxFloorHeight;
         this.xFloorHeight = - this.maxFloorHeight;
         
@@ -204,26 +206,29 @@ class Flat{
 
     draw = (player) =>{
         if(player){
-            // when player has not passed building vertically
-            if(player.y + player.height < this.parentY ){
-                if(player.x + player.width > this.parentX){
-                    this.drawCube(1)
-                }else{
-                    this.drawCube(0)  
+            if(this.floor < 1){
+                // when player has not passed building vertically
+                if(player.y + player.height < this.parentY ){
+                    if(player.x + player.width > this.parentX){
+                        this.drawCube(1)
+                    }else{
+                        this.drawCube(0)  
+                    }
                 }
-            }
-            else{
-                // when player has passed building horiaontally
-               if(player.x + player.width > this.parentX + this.parentWidth){
-                    this.drawCube(2)
-                }    
-                else if(player.x + player.width > this.parentX){
-                    this.drawCube(1)
-                }            
                 else{
-                    this.drawCube(0)    
-                }                
-            }            
+                    // when player has passed building horiaontally
+                if(player.x + player.width > this.parentX + this.parentWidth){
+                        this.drawCube(2)
+                    }    
+                    else if(player.x + player.width > this.parentX){
+                        this.drawCube(1)
+                    }            
+                    else{
+                        this.drawCube(0)    
+                    }                
+                }  
+            }
+                      
         }
     }
 }

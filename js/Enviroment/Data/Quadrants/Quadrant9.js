@@ -1,221 +1,46 @@
 let quadrant9 = {
-
-    path : [
+    path:[
         {
-            x : 160,
-            y : 600 + 60 * 0,
+            x : 1280,
+            y : 1260,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
+            orientation: 'horizontal',
+            side: 'right'
         },
         {
-            x : 160,
-            y : 600 + 60 * 1,
+            x : 1340,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : true,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1400,
+            y : 1260,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
+            isLeftJunction : true,
+            orientation: 'horizontal',
+            side: 'right'
         },
+
         {
-            x : 160,
-            y : 600 + 60 * 2,
+            x : 1340,
+            y : 1320,
             height : 60,
             width : 60,
             isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-        {
-            x : 160,
-            y : 600 + 60 * 3,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-        {
-            x : 160,
-            y : 600 + 60 * 4,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-        {
-            x : 160,
-            y : 600 + 60 * 5,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-        {
-            x : 160,
-            y : 600 + 60 * 6,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-        {
-            x : 160,
-            y : 600 + 60 * 7,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-        {
-            x : 160,
-            y : 600 + 60 * 8,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-
-        {
-            x : 160,
-            y : 600 + 60 * 9,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'right'
-        },
-
-
-        {
-            x : 220,
-            y : 600,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80 * 2,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80 * 3,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80 * 4,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80 * 5,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80 * 6,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220,
-            y : 600 + 80 * 7,
-            height : 80,
-            width : 80,
-            isRoad : true,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side: 'left'
-        },
-
-        {
-            x : 220 + 80,
-            y : 600 + 80,
-            height : 80,
-            width : 80,
-            isRoad : true,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
@@ -223,11 +48,11 @@ let quadrant9 = {
         },
 
         {
-            x : 220 + 80,
-            y : 600 + 80 * 2,
-            height : 80,
-            width : 80,
-            isRoad : true,
+            x : 1340,
+            y : 1380,
+            height : 60,
+            width : 60,
+            isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
@@ -235,11 +60,11 @@ let quadrant9 = {
         },
 
         {
-            x : 220 + 80,
-            y : 600 + 80 * 3,
-            height : 80,
-            width : 80,
-            isRoad : true,
+            x : 1340,
+            y : 1440,
+            height : 60,
+            width : 60,
+            isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
@@ -247,11 +72,11 @@ let quadrant9 = {
         },
 
         {
-            x : 220 + 80,
-            y : 600 + 80 * 4,
-            height : 80,
-            width : 80,
-            isRoad : true,
+            x : 1340,
+            y : 1500,
+            height : 60,
+            width : 60,
+            isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
@@ -259,11 +84,11 @@ let quadrant9 = {
         },
 
         {
-            x : 220 + 80,
-            y : 600 + 80 * 5,
-            height : 80,
-            width : 80,
-            isRoad : true,
+            x : 1340,
+            y : 1560,
+            height : 60,
+            width : 60,
+            isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
@@ -271,11 +96,11 @@ let quadrant9 = {
         },
 
         {
-            x : 220 + 80,
-            y : 600 + 80 * 6,
-            height : 80,
-            width : 80,
-            isRoad : true,
+            x : 1340,
+            y : 1620,
+            height : 60,
+            width : 60,
+            isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
@@ -283,140 +108,373 @@ let quadrant9 = {
         },
 
         {
-            x : 220 + 80,
-            y : 600 + 80 * 7,
-            height : 80,
-            width : 80,
-            isRoad : true,
+            x : 1340,
+            y : 1680,
+            height : 60,
+            width : 60,
+            isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
             side: 'right'
         },
 
+        {
+            x : 1340,
+            y : 1740,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
+        },
 
         {
-            x : 380,
-            y : 600 + 60 * 0,
+            x : 1340,
+            y : 1800,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
+        },
+
+        {
+            x : 1340,
+            y : 1860,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
+        },
+
+        {
+            x : 1400,
+            y : 1320,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1380,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1440,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1500,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1560,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1620,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1680,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1740,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1800,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1400,
+            y : 1860,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1460,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1520,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1580,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1640,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1700,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1740,
+            y : 1260,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : true,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'right'
+        },
+
+        {
+            x : 1740,
+            y : 1320,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
+        },
+
+        {
+            x : 1740,
+            y : 1380,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
         },
         {
-            x : 380,
-            y : 600 + 60 * 1,
+            x : 1740,
+            y : 1440,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 2,
+            x : 1740,
+            y : 1500,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 3,
+            x : 1740,
+            y : 1560,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 4,
+            x : 1740,
+            y : 1620,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 5,
+            x : 1740,
+            y : 1680,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 6,
+            x : 1740,
+            y : 1740,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 7,
+            x : 1740,
+            y : 1800,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
+
         {
-            x : 380,
-            y : 600 + 60 * 8,
+            x : 1740,
+            y : 1860,
             height : 60,
             width : 60,
             isRoad : false,
             isRightJunction : false,
             isLeftJunction : false,
             orientation: 'vertical',
-            side : 'left'
-        },
-        {
-            x : 380,
-            y : 600 + 60 * 9,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'vertical',
-            side : 'left'
+            side: 'right'
         },
 
     ],
     building :[
         {
-            x : 0,
-            y: 600,
-            height: 640,
-            width : 160,
-            floors: 2,
+            x : 1460,
+            y: 1320,
+            height: 600,
+            width : 280,
+            floors: 3,
             side : 'right'
         },
-        
     ]
-    
 }

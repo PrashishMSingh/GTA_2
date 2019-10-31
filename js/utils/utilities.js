@@ -138,7 +138,7 @@ getSprite=(x, y, width, height, item)=>{
         'roadHR_CX' : {sx : 60 * 9, sy : 60 * 26, sw : 60, sh:60, dx : x, dy:y, dw : width, dh : height},
 
         'roadVL_RJ' : {sx : 60 * 4, sy :60 * 22 + 20, sw : 60, sh:60, dx : x, dy:y, dw : width, dh : height},
-        'roadHL_LJ' : {sx : 60 * 16, sy :60 * 4 + 20, sw : 60, sh:60, dx : x, dy:y, dw : width, dh : height},
+        'roadHL_LJ' : {sx : 60 *1 + 10 , sy :60 * 27 - 5, sw : 58, sh:48, dx : x, dy:y, dw : width, dh : height},
 
         'roadVR_RJ' : {sx : 60 *1 + 10 , sy :60 * 27 - 5, sw : 58, sh:48, dx : x, dy:y, dw : width, dh : height},
         'roadHR_LJ' : {sx : 60 *1 + 10 , sy :60 * 27 - 5, sw : 58, sh:48, dx : x, dy:y, dw : width, dh : height},

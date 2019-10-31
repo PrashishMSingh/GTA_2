@@ -131,20 +131,9 @@ let quadrant2 = {
             width : 60,
             isRoad : false,
             isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'horizontal',
-            side: 'left'
-        },
-        {
-            x : 600 + 60 * 9,
-            y : 160,
-            height : 60,
-            width : 60,
-            isRoad : false,
-            isRightJunction : false,
-            isLeftJunction : false,
-            orientation: 'horizontal',
-            side: 'left'
+            isLeftJunction : true,
+            orientation: 'vertical',
+            side: 'right'
         },
 
         {
@@ -610,12 +599,116 @@ let quadrant2 = {
             orientation: 'horizontal',
             side: 'right'
         },
+
+        {
+            x : 1080,
+            y : 0,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
+        },
+
+        {
+            x : 1080,
+            y : 60,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
+        },
+
+        {
+            x : 1080,
+            y : 120,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'right'
+        },
+
+        {
+            x : 1140,
+            y : 0,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1140,
+            y : 60,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1140,
+            y : 120,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1140,
+            y : 160,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : true,
+            isLeftJunction : false,
+            orientation: 'vertical',
+            side: 'left'
+        },
+
+        {
+            x : 1200,
+            y : 160,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'left'
+        },
     ],
     building :[
         {
             x : 1040,
             y : 440,
-            height : 800,
+            height : 600,
+            width : 320,
+            floors: 1,
+            side : 'left'
+        },
+        {
+            x : 1200,
+            y : 0,
+            height : 160,
             width : 160,
             floors: 1,
             side : 'left'
