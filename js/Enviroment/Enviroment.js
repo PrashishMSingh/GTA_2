@@ -802,6 +802,7 @@ class Environment{
         }
         if(this.player.buffer.includes(punchKeyCode)){
             this.player.punch(this.checkPeople)
+            this.player.updatePursuit(this.showPursuitStar)
         }
         this.checkPursuit()
         this.player.updatePursuit(this.showPursuitStar)

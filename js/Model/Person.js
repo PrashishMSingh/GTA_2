@@ -127,7 +127,10 @@ class Person extends Model{
             pursuit = 1
         }
         this.state.pursuit = pursuit
-        showPursuitStar()
+        if(showPursuitStar){
+            showPursuitStar()
+        }
+        
     }
 
     hit = (obj, showPlayersHeart) =>{
