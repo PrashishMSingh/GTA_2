@@ -56,7 +56,7 @@ class Environment{
         this.policeVehicleState = {
             generationTime : 100,
             timer : 0,
-            maxVehicle : 8
+            maxVehicle : 6
         }
         this.coolDownState = {
             tick : 0,
@@ -901,7 +901,6 @@ class Environment{
         }
 
         Object.keys(this.content).map(key =>{
-            
             this.content[key].map(item =>{
                 if(key === 'building'){
                     item.floorList.map(flat => flat.changePerspective(this.player, this.top, this.left))
