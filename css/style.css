@@ -1,0 +1,26 @@
+.game-title{
+    color : blue;
+    font-weight : bold;
+    font-size: 30px;
+    text-align: center;
+}
+
+.manual table tr td{
+    color : white;
+    line-height: 40px;
+    text-align: center;
+}
+
+.manual table tr :first-child{
+    color : red
+}
+
+.manual table tr th{
+    color : yellow
+}
+
+
+
+table{
+    margin:auto
+}

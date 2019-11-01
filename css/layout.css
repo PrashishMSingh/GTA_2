@@ -16,7 +16,6 @@ ul{
 }
 
 .main-container{
-    background-color: #383838;
     padding: 30px;
     margin: auto;
     margin-top: 40px;
@@ -63,18 +62,24 @@ ul{
     margin : 0 4px
 }
 
+.game-info-wrapper{
+    display : none
+}
+
 .game-container{
     width : 100%;
     height : 100%;
-    overflow: scroll;
+    overflow: hidden;
     position:relative;
+    display : none;
 }
 
 .game-canvas{
     background-color: #fcfcfc;
     position: absolute;
     top:0;
-    left: 0
+    left: 0;
+
 }
 
 .pursuit-money-wrapper{
@@ -94,4 +99,14 @@ ul{
     line-height : 40px;
 }
 
+.start-menu{
+    text-align: center;
+}
 
+.startBtn{
+    padding: 0 20px;
+    line-height: 35px;
+    background : red;
+    color : white;
+    margin-top: 20px;
+}

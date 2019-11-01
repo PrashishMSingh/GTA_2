@@ -14,7 +14,7 @@ class Environment{
         this.policeVehicleProb = 0.2
         this.hasPoliceCar = false
 
-        this.createPedesterianProb = 0.8
+        this.createPedesterianProb = 0.4
 
         if(!currentIndex){
             this.currentIndex = environmentData.initialQuadrant
@@ -125,7 +125,7 @@ class Environment{
         let condition1 = this.currentIndex[index] >= 1;
         
         // check if index is a col or a row
-        let condition2 = index ? this.currentIndex[index] < environmentData.colCount-1 : this.currentIndex[index] < environmentData.rowCount-1;
+        let condition2 = index ? this.currentIndex[index] < environmentData.colCount : this.currentIndex[index] < environmentData.rowCount;
         
         if(!condition1){
             index? sideQuadrants['left'] = false : sideQuadrants['top'] = false;
@@ -139,17 +139,15 @@ class Environment{
 
     updateEnvironment = () =>{
         this.quadrantDataList = []
-        let noOfQuadrant = 2
-        let quadrantCount = (environmentData.quadrantRenderRange * noOfQuadrant);
+        let quadrantCount = (environmentData.quadrantRenderRange);
         let rowInd = 0;
         let colInd = 1;
 
-        let rowEmptySide = this.onSideQuadrants(rowInd)
-        let colEmptySide = this.onSideQuadrants(colInd)
+        let isHorSide = this.onSideQuadrants(rowInd)
+        let isVerSide = this.onSideQuadrants(colInd)
         
-        this.rowCount = Object.keys(rowEmptySide).length ? quadrantCount : quadrantCount + 1;
-        this.colCount = Object.keys(colEmptySide).length ? quadrantCount : quadrantCount + 1;
-        
+        this.rowCount = Object.keys(isHorSide).length ? quadrantCount : quadrantCount + 1;
+        this.colCount = Object.keys(isVerSide).length ? quadrantCount : quadrantCount + 1;
 
         this.canvas.setAttribute('width', SCREEN_WIDTH * this.colCount)
         this.canvas.setAttribute('height', SCREEN_HEIGHT * this.rowCount)
@@ -157,10 +155,10 @@ class Environment{
         let rowStart = this.currentIndex[0] ? this.currentIndex[0] - 1 : 0
         let colStart = this.currentIndex[1] ? this.currentIndex[1] -1 : 0
         
-        for(let row = rowStart; row < this.rowCount; row++){
+        for(let row = 0; row < this.rowCount; row++){
             if(quadrantData[row]){
                 let vQuadrant = []
-                for(let col = colStart; col < this.colCount; col ++){
+                for(let col = 0; col < this.colCount; col ++){
                     if(quadrantData[row][col]){
                         vQuadrant.push(quadrantData[row][col])      
                     }               
@@ -180,6 +178,7 @@ class Environment{
     }
 
     createQuadrant = () =>{
+        this.quadrantList = []
         this.quadrantDataList.map((quadrantData, i) =>{
             let tempList = []
             quadrantData.map((data, j) =>{
@@ -203,12 +202,6 @@ class Environment{
             if(this.player.y > SCREEN_HEIGHT * i && this.player.y < SCREEN_HEIGHT * (i + 1)){
                 row = i
             }
-        }
-        if(row !== this.currentIndex[0] || col !== this.currentIndex[1]){
-            this.currentIndex[0] = row
-            this.currentIndex[1] = col
-            this.updateEnvironment()
-            
         }
         return {row : row, col : col}
     }
@@ -261,6 +254,7 @@ class Environment{
 
     getObjectsSpawnPath = (type) =>{
         let index = this.getQuadrantIndex()
+        
         let quadrantDataList = this.quadrantDataList[index.row][index.col]
 
         let selectedPath = []
@@ -910,7 +904,7 @@ class Environment{
             
             this.content[key].map(item =>{
                 if(key === 'building'){
-                    item.floorList.map(flat => flat.changePerspective(this.player, this.getQuadrantIndex))
+                    item.floorList.map(flat => flat.changePerspective(this.player, this.top, this.left))
                 }
                 if(key === 'player'){
                     if(this.content[key].isActive){

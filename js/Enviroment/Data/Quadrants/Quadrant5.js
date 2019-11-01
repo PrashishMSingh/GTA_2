@@ -731,6 +731,42 @@ let quadrant5 = {
             orientation: 'vertical',
             side: 'left'
         },
+
+        {
+            x : 1040,
+            y : 1040,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'left'
+        },
+
+        {
+            x : 1100,
+            y : 1040,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'left'
+        },
+
+        {
+            x : 1160,
+            y : 1040,
+            height : 60,
+            width : 60,
+            isRoad : false,
+            isRightJunction : false,
+            isLeftJunction : false,
+            orientation: 'horizontal',
+            side: 'left'
+        },
        
     ],
 }

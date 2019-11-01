@@ -24,6 +24,17 @@ class Person extends Model{
         this.hasFalled = false
         this.isDead = false
         
+        
+        this.recentJunction = {
+            isRightJunction : false,
+            isLeftJunction : false
+        }
+        this.resetState()
+        this.initJunctionBuffer()
+        this.initState()
+    }
+
+    initState = () =>{
         this.state = {   
             health : 7,    
             sprint : 7,
@@ -32,12 +43,6 @@ class Person extends Model{
             kill : 0,
             policeKills : 0
         }
-        this.recentJunction = {
-            isRightJunction : false,
-            isLeftJunction : false
-        }
-        this.resetState()
-        this.initJunctionBuffer()
     }
 
     initJunctionBuffer = () =>{
@@ -359,6 +364,18 @@ class Person extends Model{
                     this.direction = degree - degreeOffSet
                     if(this.friction > 0){
                         this.friction -= 0.03
+                    }
+                    let maxScreenWidth = SCREEN_WIDTH * 2
+                    let maxScreenHeight = SCREEN_HEIGHT * 2
+                    if(this.x < 0){
+                        this.x = 0
+                    }if(this.y < 0){
+                        this.y = 0
+                    }
+                    if(this.x > maxScreenWidth){
+                        this.x = maxScreenWidth
+                    }if(this.y > maxScreenHeight){
+                        this.y = maxScreenHeight
                     }
                     this.movePerson(degree, updateObjPath)
                 }else{

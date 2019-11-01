@@ -14,10 +14,8 @@ class Flat{
     }
 
     init = () =>{
-        // 5
-        this.minFloorHeight = 1;
-        // 30
-        this.maxFloorHeight = 1
+        this.minFloorHeight = 5;        
+        this.maxFloorHeight = 30
         this.yFloorHeight = - this.maxFloorHeight;
         this.xFloorHeight = - this.maxFloorHeight;
         
@@ -97,8 +95,14 @@ class Flat{
         }
     }
 
-    changePerspective = (player, quadrantIndex) =>{
-        this.buildingView(player)
+    changePerspective = (player) =>{
+        if(this.parentX <= 0 || this.parentY <= 0){
+            this.xFloorHeight = this.maxFloorHeight - 5
+            this.yFloorHeight = this.maxFloorHeight - 5
+        }else{
+            this.buildingView(player)
+        }
+        
         this.create()        
         this.draw(player)
     }
@@ -185,7 +189,7 @@ class Flat{
             this.context.beginPath()
             this.drawSides(sideCords)
             this.context.fillStyle = params.color
-            this.context.strokeStyle = 'black'
+            this.context.strokeStyle = 'grey'
             this.context.fill()        
             this.context.stroke()
             this.context.restore()
@@ -194,10 +198,10 @@ class Flat{
 
     getCubeParams =(orientation) =>{
         return{
-                back : { x : this.backSideBoxData.x, y : this.backSideBoxData.y, color : '#2356B5'},
-                left : { x : this.leftSideBoxData.x, y : this.leftSideBoxData.y, color : '#137FDF' },
-                front : {x : this.frontSideData.x, y : this.frontSideData.y, color : '#137FDF'},
-                right: {x : this.rightSideBoxData.x, y : this.rightSideBoxData.y, color: '#2356B5'},
+                back : { x : this.backSideBoxData.x, y : this.backSideBoxData.y, color : '#A9A9A9'},
+                left : { x : this.leftSideBoxData.x, y : this.leftSideBoxData.y, color : '#C0C0C0' },
+                front : {x : this.frontSideData.x, y : this.frontSideData.y, color : '#D3D3D3'},
+                right: {x : this.rightSideBoxData.x, y : this.rightSideBoxData.y, color: '#C0C0C0'},
                 top : {x : this.topSideBoxData.x, y:this.topSideBoxData.y, color: 'grey'}
 
         }[orientation]
@@ -206,28 +210,28 @@ class Flat{
 
     draw = (player) =>{
         if(player){
-            if(this.floor < 1){
-                // when player has not passed building vertically
-                if(player.y + player.height < this.parentY ){
-                    if(player.x + player.width > this.parentX){
-                        this.drawCube(1)
-                    }else{
-                        this.drawCube(0)  
-                    }
+            
+            // when player has not passed building vertically
+            if(player.y + player.height < this.parentY ){
+                if(player.x + player.width > this.parentX){
+                    this.drawCube(1)
+                }else{
+                    this.drawCube(0)  
                 }
-                else{
-                    // when player has passed building horiaontally
-                if(player.x + player.width > this.parentX + this.parentWidth){
-                        this.drawCube(2)
-                    }    
-                    else if(player.x + player.width > this.parentX){
-                        this.drawCube(1)
-                    }            
-                    else{
-                        this.drawCube(0)    
-                    }                
-                }  
             }
+            else{
+                // when player has passed building horiaontally
+            if(player.x + player.width > this.parentX + this.parentWidth){
+                    this.drawCube(2)
+                }    
+                else if(player.x + player.width > this.parentX){
+                    this.drawCube(1)
+                }            
+                else{
+                    this.drawCube(0)    
+                }                
+            }  
+        
                       
         }
     }
