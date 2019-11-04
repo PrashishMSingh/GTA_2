@@ -1,9 +1,9 @@
 class Quadrant{
-    constructor(canvas, context, data, player){
+    constructor(context, data, player, quadrantIndex){
         this.data = data;
-        this.canvas = canvas;
         this.context = context;
         this.player = player
+        this.quadrantIndex = quadrantIndex
         this.content = {
             building : [],
             fence : [],

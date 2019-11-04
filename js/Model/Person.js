@@ -24,7 +24,6 @@ class Person extends Model{
         this.hasFalled = false
         this.isDead = false
         
-        
         this.recentJunction = {
             isRightJunction : false,
             isLeftJunction : false

@@ -221,7 +221,7 @@ class Flat{
             }
             else{
                 // when player has passed building horiaontally
-            if(player.x + player.width > this.parentX + this.parentWidth){
+                if(player.x + player.width > this.parentX + this.parentWidth){
                     this.drawCube(2)
                 }    
                 else if(player.x + player.width > this.parentX){
@@ -230,9 +230,7 @@ class Flat{
                 else{
                     this.drawCube(0)    
                 }                
-            }  
-        
-                      
+            }        
         }
     }
 }

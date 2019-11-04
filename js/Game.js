@@ -65,6 +65,8 @@ class Game{
     startGame = () =>{
         if(this.player){
             if(this.player.isDead){
+                this.environment.top = 0
+                this.environment.left = 0
                 let xPos = 160
                 let yPos = 80
                 this.player.initState()

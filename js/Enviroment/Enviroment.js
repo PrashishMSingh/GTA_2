@@ -43,8 +43,6 @@ class Environment{
 
     init = () =>{
         this.playerDir;
-        this.updateEnvironment()
-        this.createQuadrant()
         this.initiateEventListener()
         this.top = 0
         this.left = 0
@@ -67,7 +65,17 @@ class Environment{
             tickPerFrame : 60,
             carTickPerFrame : 50
         }
+    }
 
+    generateQuadrants = () =>{
+        this.quadrantController = new QuadrantController(this.context, this.player)
+        this.quadrantController.renderQuadrants(this.setCanvasSize)
+        this.content = this.quadrantController.content
+    }
+
+    setCanvasSize = (width, height) =>{
+        this.canvas.setAttribute('width', width)
+        this.canvas.setAttribute('height', height)
     }
 
     // fas fa-bolt
@@ -120,92 +128,6 @@ class Environment{
         this.moneyBar.innerText = this.player.state.money
     }
 
-    onSideQuadrants = (index) =>{
-        let sideQuadrants = {}
-        let condition1 = this.currentIndex[index] >= 1;
-        
-        // check if index is a col or a row
-        let condition2 = index ? this.currentIndex[index] < environmentData.colCount : this.currentIndex[index] < environmentData.rowCount;
-        
-        if(!condition1){
-            index? sideQuadrants['left'] = false : sideQuadrants['top'] = false;
-        }
-        if(!condition2){
-            index? sideQuadrants['right'] = false : sideQuadrants['bottom'] = false;
-        }
-        
-        return sideQuadrants;
-    }
-
-    updateEnvironment = () =>{
-        this.quadrantDataList = []
-        let quadrantCount = (environmentData.quadrantRenderRange);
-        let rowInd = 0;
-        let colInd = 1;
-
-        let isHorSide = this.onSideQuadrants(rowInd)
-        let isVerSide = this.onSideQuadrants(colInd)
-        
-        this.rowCount = Object.keys(isHorSide).length ? quadrantCount : quadrantCount + 1;
-        this.colCount = Object.keys(isVerSide).length ? quadrantCount : quadrantCount + 1;
-
-        this.canvas.setAttribute('width', SCREEN_WIDTH * this.colCount)
-        this.canvas.setAttribute('height', SCREEN_HEIGHT * this.rowCount)
-
-        let rowStart = this.currentIndex[0] ? this.currentIndex[0] - 1 : 0
-        let colStart = this.currentIndex[1] ? this.currentIndex[1] -1 : 0
-        
-        for(let row = 0; row < this.rowCount; row++){
-            if(quadrantData[row]){
-                let vQuadrant = []
-                for(let col = 0; col < this.colCount; col ++){
-                    if(quadrantData[row][col]){
-                        vQuadrant.push(quadrantData[row][col])      
-                    }               
-                }
-                this.quadrantDataList.push(vQuadrant) 
-            }   
-                       
-        }
-    }
-
-    // add content from all the quadrants in a single list for collision
-    updateContent = (content) =>{
-        Object.keys(content).map(key =>{
-            this.content[key] = this.content[key].concat(content[key])
-        })
-        
-    }
-
-    createQuadrant = () =>{
-        this.quadrantList = []
-        this.quadrantDataList.map((quadrantData, i) =>{
-            let tempList = []
-            quadrantData.map((data, j) =>{
-                let quadrant = new Quadrant(this.canvas, this.context, data, this.player)
-                this.updateContent(quadrant.create(), i, j)
-                tempList.push(quadrant)
-            })
-            this.quadrantList.push(tempList)
-        })
-        
-    }
-
-    // get the index of the quadrant the user is currently at
-    getQuadrantIndex = () =>{
-        let col = 0;
-        let row = 0
-        for(var i = 0; i< this.quadrantList.length; i++){
-            if(this.player.x >SCREEN_WIDTH * i && this.player.x < SCREEN_WIDTH * (i + 1)){
-                col = i;
-            }   
-            if(this.player.y > SCREEN_HEIGHT * i && this.player.y < SCREEN_HEIGHT * (i + 1)){
-                row = i
-            }
-        }
-        return {row : row, col : col}
-    }
-
     /*
     * @param car : this car the player has currently entered
     * Sets the reference to the car the user is currently in for the enviroment
@@ -222,6 +144,8 @@ class Environment{
             this.player.currentPath = this.getObjPath(this.player);
         }
         this.content.player.push(player)
+
+        this.generateQuadrants()
         this.showPlayersHeart()
         this.showPlayerBalance()
         this.showPlayerStamina()
@@ -233,13 +157,13 @@ class Environment{
     }
 
     checkPathSide= (path) =>{
-        
         let endLeftSides = Math.abs(this.left)
         let endTopSides = Math.abs(this.top)
         let endRightSides = endLeftSides + SCREEN_WIDTH
         let endBottomSides = endTopSides + SCREEN_HEIGHT
         
         let side;
+
         if(path.x < endLeftSides && path.x + path.width > endLeftSides &&path.orientation === 'horizontal'){
             side = 0
         }else if(path.y < endTopSides && path.y + path.height > endTopSides && path.orientation === 'vertical'){
@@ -253,9 +177,8 @@ class Environment{
     }
 
     getObjectsSpawnPath = (type) =>{
-        let index = this.getQuadrantIndex()
-        
-        let quadrantDataList = this.quadrantDataList[index.row][index.col]
+        let index = this.quadrantController.getCurrentQuadrant().quadrantIndex
+        let quadrantDataList = this.quadrantController.quadrantDataList[index[0]][index[1]]
 
         let selectedPath = []
         let spawnedIndex;
@@ -322,7 +245,6 @@ class Environment{
                 }
             }
         }
-
     }
 
     generatePedesterian = () =>{
@@ -354,10 +276,14 @@ class Environment{
 
     changeDirection = (obj) =>{
         let currentPath = obj.currentPath
+
         if(!obj.isPlayer && !obj.isPlayerCar){   
+
             if(currentPath.isRightJunction || currentPath.isLeftJunction){
+                
                 let collisionPlace = this.getCollisionPlace(currentPath, obj)
                 let direction ;
+
                 switch(collisionPlace){
                     case 'top':
                         if(obj.direction === 180){
@@ -401,20 +327,21 @@ class Environment{
                 }
                 
                 
-                    if(collisionPlace){
-                        let recentJunction = obj.recentJunction
-                        if(recentJunction.isRightJunction !== currentPath.isRightJunction || recentJunction.isLeftJunction !== currentPath.isLeftJunction){
-                            if(direction){
-                                obj.direction = direction
-                                recentJunction.isRightJunction = obj.currentPath.isRightJunction
-                                recentJunction.isLeftJunction = obj.currentPath.isLeftJunction
-                            }
-                            
-                        }                    
-                    }
+                if(collisionPlace){
+                    let recentJunction = obj.recentJunction
+                    if(recentJunction.isRightJunction !== currentPath.isRightJunction || 
+                        recentJunction.isLeftJunction !== currentPath.isLeftJunction){
+                        if(direction){
+                            obj.direction = direction
+                            recentJunction.isRightJunction = obj.currentPath.isRightJunction
+                            recentJunction.isLeftJunction = obj.currentPath.isLeftJunction
+                        }
+                        
+                    }                    
                 }
             }
         }
+    }
 
     updateObjPath =(obj) =>{
         if(obj.currentPath){
@@ -497,25 +424,21 @@ class Environment{
         var topDiff = (item.y + item.height) - obj.y 
 
         if( leftDiff < minDiff){
-            
             collisionPlace = 'left'
             minDiff = leftDiff          
         }
 
         if(rightDiff < minDiff){
-            
             collisionPlace = 'right'
             minDiff = rightDiff
         }
 
         if(bottomDiff < minDiff){
-            
             collisionPlace = 'bottom'
             minDiff = bottomDiff
         }
 
         if(topDiff < minDiff){
-            
             collisionPlace = 'top'
             minDiff = topDiff
         }
@@ -809,6 +732,7 @@ class Environment{
         
     }
 
+
     // Move player environment
     move = () =>{
         
@@ -836,6 +760,12 @@ class Environment{
 
         this.generatePedesterian()
         this.generatePedesterianCar()
+        let requireUpdate = this.quadrantController.hasQuadrantChanged()
+        if(requireUpdate){
+            this.quadrantController.renderQuadrants(this.setCanvasSize)
+
+        }
+
     }
 
     isInsideRenderZone = (obj) =>{
@@ -895,28 +825,8 @@ class Environment{
         this.canvas.style.top = this.top + 'px'
         this.canvas.style.left = this.left + 'px'
 
-        let color = {
-            // building : 'blue',
-            fence : 'yellow',
-            path : 'grey'
-        }
-
-        Object.keys(this.content).map(key =>{
-            this.content[key].map(item =>{
-                if(key === 'building'){
-                    item.floorList.map(flat => flat.changePerspective(this.player, this.top, this.left))
-                }
-                if(key === 'player'){
-                    if(this.content[key].isActive){
-                        item.draw()
-                    }
-                }
-                else{
-                    item.draw(color[key])
-                }
-                
-                })
-        })
+        
+        this.quadrantController.draw()
         this.updatePedesterianMove()
         this.updateCarMove()
     }
