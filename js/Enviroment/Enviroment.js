@@ -10,30 +10,12 @@ class Environment{
         this.moneyBar = moneyBar;
         this.pursuitBar = pursuitBar;
         this.context = context;
-        
-        this.hasPoliceCar = false
-
-        if(!currentIndex){
-            this.currentIndex = environmentData.initialQuadrant
-        }        
-        this.quadrantDataList = []
-        this.quadrantList = []
-        
-        
-        this.playerVelocity = 1.5
         this.playersCar;
-        this.pursuitDuration = 500
-        this.tempPath = {
-            isRightJunction : false,
-            isLeftJunction : false
-        }
         this.init()
     }   
 
     init = () =>{
-        this.playerDir;
         this.initiateEventListener()
-        
         this.top = 0
         this.left = 0
     }
@@ -48,9 +30,14 @@ class Environment{
         this.generateQuadrants()
         this.instantiateUIController()
         this.collisionController = new CollisionController(this.player, this.uiController, this.quadrantController)        
+        this.instantiateMovingObjects()
+        this.quadrantController.content.player.push(this.player)   
+    }
+
+    instantiateMovingObjects = () =>{
         this.movingObjController = new MovingObjController(this.context, this.player, this.left, this.top, this.quadrantController, this.collisionController)
-        this.quadrantController.content.player.push(this.player)
-        
+        this.pedesterianController = new PedesterianController(this.context, this.player, this.left, this.top, this.quadrantController, this.collisionController)
+        this.carController = new CarController(this.context, this.player, this.left, this.top, this.quadrantController, this.collisionController)
     }
 
     generateQuadrants = () =>{
@@ -88,7 +75,7 @@ class Environment{
             }
             if(keyCode === 70 || keyCode === 13){
                 if(!this.playersCar){
-                    this.playersCar = this.player.getInCar(this.movingObjController.checkCars)  
+                    this.playersCar = this.player.getInCar(this.carController.checkCars)  
                 }else{
                     this.player.isActive = true
                     this.player.updateCollisionPosition = true
@@ -115,12 +102,6 @@ class Environment{
         })
     }
 
-    
-
-    /*
-    * @param car : this car the player has currently entered
-    * Sets the reference to the car the user is currently in for the enviroment
-    */
     setActiveCar = (car) =>{
         this.activeCar = car
     }
@@ -161,12 +142,12 @@ class Environment{
             this.player.resetVelocity(this.uiController.showPlayerStamina)
         }
         if(this.player.buffer.includes(punchKeyCode)){
-            this.player.punch(this.movingObjController.checkPeople)
+            this.player.punch(this.pedesterianController.checkPeople)
             this.player.updatePursuit(this.uiController.showPursuitStar)
         }
-        this.movingObjController.checkPursuit()
-        this.movingObjController.updatePedesterianMove(this.top, this.left)
-        this.movingObjController.updateCarMove(this.top, this.left)
+        this.pedesterianController.checkPursuit()
+        this.pedesterianController.updatePedesterianMove(this.top, this.left)
+        this.carController.updateCarMove(this.top, this.left)
         this.player.updatePursuit(this.uiController.showPursuitStar)
     }
 
@@ -174,6 +155,7 @@ class Environment{
     updateEnviroment = () =>{
         let requireUpdate = this.quadrantController.hasQuadrantChanged()
         if(requireUpdate){
+            console.log('require update')
             this.quadrantController.renderQuadrants(this.setCanvasSize)
         }
     }  
@@ -182,6 +164,7 @@ class Environment{
     move = () =>{
         let obj = this.player
         let screenShiftSpeed = Math.abs(obj.velocity * (1 - obj.friction))
+        
         if(this.playersCar){
             obj = this.playersCar
             screenShiftSpeed = Math.abs(obj.velocity * (1 - obj.friction))* 2
@@ -201,8 +184,8 @@ class Environment{
         if(obj.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
             this.left  += screenShiftSpeed
         }    
-        this.movingObjController.generatePedesterian(this.top, this.left, this.getItemCount, this.addToContent)
-        this.movingObjController.generatePedesterianCar(this.top, this.left, this.getItemCount, this.addToContent)
+        this.pedesterianController.generatePedesterian(this.top, this.left, this.getItemCount, this.addToContent)
+        this.carController.generatePedesterianCar(this.top, this.left, this.getItemCount, this.addToContent)
     }
 
     draw = () =>{

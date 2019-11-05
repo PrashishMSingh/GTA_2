@@ -129,7 +129,6 @@ class QuadrantController{
     }
 
     createQuadrant = () =>{
-        console.log('creating quadrant')
         this.resetContent()
         this.quadrantList = []        
         this.quadrantDataList.map((quadrantData, i) =>{
@@ -177,7 +176,7 @@ class QuadrantController{
         Object.keys(this.content).map(key =>{
             this.content[key].map(item =>{
                 if(key === 'building'){
-                    item.floorList.map(flat => flat.changePerspective(this.player, this.top, this.left))
+                    item.floorList.map(flat => flat.changePerspective(this.player))
                 }
                 if(key === 'player'){
                     if(this.content[key].isActive){
@@ -188,7 +187,7 @@ class QuadrantController{
                     item.draw()
                 }
                 
-                })
+            })
         })
     }
 

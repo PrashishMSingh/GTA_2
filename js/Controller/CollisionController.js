@@ -4,6 +4,10 @@ class CollisionController{
         this.uiController = uiController
     }
 
+    // check if the user has collided to different type of items in content
+    // @ param obj : object that need to check for collision
+    // @ param content : content will the the items rendered in the enviroment
+    // filter item that the obj is allowed to collide
     hasCollided = (obj, content) =>{
         let collided = false
         Object.keys(content).map(key =>{
@@ -49,6 +53,8 @@ class CollisionController{
         return collided
     }
 
+    // @ param obj: a moving object that can collide to an element
+    // @ param item: an item with which the obj has collided
     // returns true if the user had collision and rearranges the user position
     checkCollision = (item, obj) =>{
         let rightCollision = obj.x + obj.width > item.x
@@ -116,6 +122,9 @@ class CollisionController{
         return collisionPlace
     }
 
+    // @ param item : Car item that has collided with the obj
+    // @ param obj : a pedesterian with which car has collided
+    // for running over the pedesterian if th can has collided with the pedesterian
     objectItemCollision = (item, obj ) =>{
         obj.onMove = false
         obj.updateCollisionPosition = false
@@ -147,6 +156,10 @@ class CollisionController{
         }, 2000)
     }
 
+    
+    // @ collisionType: orientation of the object when the collision occured
+    // upon collision with other moving object changes the direction for a duration and 
+    // returns back to original direction
     changeObjectDirection = (obj, item, collisiontType) =>{
         if(obj instanceof Person){
             if(!obj.isPlayer || !obj.isPlayerCar){
@@ -171,6 +184,9 @@ class CollisionController{
         }
     }
 
+    // @ param obj: a moving object
+    // @ param item: other moving objects
+    // checks where the collision has occured and changes the obj directon accrodingly
     updateCollidedPlace = (item, obj) =>{
         let collisionPlace = this.getCollisionPlace(item, obj)
         switch(collisionPlace){
