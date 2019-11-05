@@ -23,8 +23,14 @@ class QuadrantController{
 
     resetContent = () =>{
         Object.keys(this.content).map(key =>{
-            if(key !== 'player' && key !== 'car' && key !== 'pedesterian' ){
-                this.content[key] = []
+            if(key !== 'player' && key !== 'pedesterian' ){
+                if(key === 'car'){
+                    if(!this.content[key].isPlayerCar){
+                        this.content[key] = this.content[key].filter(car => car.onMove)
+                    }
+                }else{
+                    this.content[key] = []
+                }                
             }
         })
     }
@@ -123,6 +129,7 @@ class QuadrantController{
     }
 
     createQuadrant = () =>{
+        console.log('creating quadrant')
         this.resetContent()
         this.quadrantList = []        
         this.quadrantDataList.map((quadrantData, i) =>{

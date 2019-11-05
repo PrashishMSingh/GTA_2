@@ -76,7 +76,8 @@ class Game{
                 this.player.state.health = 10
                 this.player.hasFalled = false
                 this.player.isDead = false;
-                this.environment.showPlayersHeart()
+                this.player.isFighting = false
+                this.environment.uiController.showPlayersHeart()
             }
         }
         this.run()
