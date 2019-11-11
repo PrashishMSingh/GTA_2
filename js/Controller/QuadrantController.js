@@ -107,8 +107,6 @@ class QuadrantController{
         let canvasHeight = heightMultiplyer * rowAdder
         
         setCanvasSize(canvasWidth, canvasHeight)
-        console.log('generating quadrants')
-        console.log('startrow : ', startRowIndex, ' start col index : ', startColIndex)
         for(let row = startRowIndex; row < startRowIndex + rowAdder; row++){
             for(let col = startColIndex; col < startColIndex + colAdder; col ++){
                 this.currentRenderIndex.push([row, col])  

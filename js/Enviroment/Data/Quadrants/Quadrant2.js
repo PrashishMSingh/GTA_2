@@ -748,7 +748,7 @@ let quadrant2 = {
                 y : 440,
                 height : 600,
                 width : 320,
-                floors: 5,
+                floors: 3,
                 side : 'left'
             },
             {
@@ -756,7 +756,7 @@ let quadrant2 = {
                 y : 0,
                 height : 160,
                 width : 160,
-                floors: 5,
+                floors: 2,
                 side : 'left'
             },
             {
@@ -764,7 +764,7 @@ let quadrant2 = {
                 y : 0,
                 height : 160,
                 width : 280,
-                floors: 5,
+                floors: 3,
                 side : 'left'
             }
         ]

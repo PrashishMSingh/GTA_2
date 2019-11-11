@@ -674,7 +674,7 @@ let quadrant3 = {
                 y : 0,
                 height : 160,
                 width : 260,
-                floors: 5,
+                floors: 3,
                 side : 'down'
             },
     
@@ -683,7 +683,7 @@ let quadrant3 = {
                 y : 440,
                 height : 600,
                 width : 260,
-                floors: 5,
+                floors: 3,
                 side : 'down'
             }
         ]
