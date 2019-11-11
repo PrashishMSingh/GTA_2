@@ -1,10 +1,11 @@
 class QuadrantController{
     constructor(context, player){
         this.currentIndex = environmentData.initialQuadrant
-        this.quadrantDataList = []
+        this.quadrantDataBuffer = []
         this.quadrantList = []
         this.player = player,
         this.context = context,
+        this.currentRenderIndex = []
         this.initContent()
         
     }
@@ -37,7 +38,6 @@ class QuadrantController{
 
     onSideQuadrants = (index) =>{
         let sideQuadrants = {}
-        
         let condition1 = this.currentIndex[index] === 0;
         
         // check if index is a col or a row
@@ -46,12 +46,11 @@ class QuadrantController{
         
         // check if the user is at the initial index
         if(condition1){
-            return index ? 'top' : 'left'
+            return index ? 'left' : 'top' 
         }
         else if (condition2){
-            return index ? 'bottom' : 'right'
+            return index ? 'right' : 'bottom'
         }
-        
         return sideQuadrants;
     }
 
@@ -74,10 +73,10 @@ class QuadrantController{
                 startRowIndex = this.currentIndex[0]
                 startColIndex = this.currentIndex[1]
             }
-            else if(isVerSide === 'top' && isHorSide !== 'left'){
+            else if(isVerSide === 'top'){
                 rowAdder = 2 
                 startRowIndex = this.currentIndex[0]
-            }else if(isVerSide !== 'top' && isVarSide === 'left'){
+            }else if( isHorSide === 'left'){
                 colAdder = 2
                 startColIndex = this.currentIndex[1]
             }
@@ -85,39 +84,53 @@ class QuadrantController{
 
         else if(isVerSide === 'bottom' || isHorSide === 'right'){
             if(isVerSide === 'bottom' && isHorSide === 'right'){
-                rowAdder = 0
-                colAdder = 0
+                rowAdder = 2
+                colAdder = 2
             }
             else if(isVerSide === 'bottom'){
-                rowAdder = 0
+                rowAdder = 2
             }else if(isHorSide === 'right'){
-                colAdder = 0
+                colAdder = 2
             }
         }
+        
         return {startRowIndex, startColIndex, rowAdder, colAdder}
     }
 
     renderQuadrants = (setCanvasSize) =>{
-        this.quadrantDataList = []        
+        this.quadrantDataBuffer = []
+        this.currentRenderIndex = []
         let {startRowIndex, startColIndex, rowAdder, colAdder} = this.getRenderParams()
         let widthMultiplyer = this.currentIndex[1] ? this.currentIndex[1] * SCREEN_WIDTH : SCREEN_WIDTH
         let heightMultiplyer = this.currentIndex[0] ? this.currentIndex[0] * SCREEN_HEIGHT : SCREEN_HEIGHT
         let canvasWidth = widthMultiplyer * colAdder
         let canvasHeight = heightMultiplyer * rowAdder
-        setCanvasSize(canvasWidth, canvasHeight)
         
+        setCanvasSize(canvasWidth, canvasHeight)
+        console.log('generating quadrants')
+        console.log('startrow : ', startRowIndex, ' start col index : ', startColIndex)
         for(let row = startRowIndex; row < startRowIndex + rowAdder; row++){
-            if(quadrantData[row]){
-                let vQuadrant = []
-                for(let col = startColIndex; col < startColIndex + colAdder; col ++){
-                    if(quadrantData[row][col]){
-                        vQuadrant.push(quadrantData[row][col])      
-                    }               
-                }
-                this.quadrantDataList.push(vQuadrant) 
+            for(let col = startColIndex; col < startColIndex + colAdder; col ++){
+                this.currentRenderIndex.push([row, col])  
             }   
         }
-        this.createQuadrant()
+        
+        this.createQuadrants()
+    }
+
+    getQuadrant = (index) =>{
+        return quadrantData.filter(quadrantItem =>quadrantItem.index[0] === index[0] && quadrantItem.index[1] === index[1])[0]
+
+    }
+
+    checkArrayItem = (mainArray, indArray) =>{
+        let containsElement = false
+        mainArray.map((item) =>{
+            if(item[0] === indArray[0] && item[1] === indArray[1]){
+                containsElement = true
+            }
+        })
+        return containsElement            
     }
 
     // add content from all the quadrants in a single list for collision
@@ -125,23 +138,21 @@ class QuadrantController{
         Object.keys(content).map(key =>{
             this.content[key] = this.content[key].concat(content[key])
         })
-        
     }
 
-    createQuadrant = () =>{
+    createQuadrants = () =>{
         this.resetContent()
-        this.quadrantList = []        
-        this.quadrantDataList.map((quadrantData, i) =>{
-            quadrantData.map((data, j) =>{
-                let quadrantIndex = [i, j]
-                let quadrant = new Quadrant(this.context, data, this.player, quadrantIndex)
-                this.updateContent(quadrant.create())
-                this.quadrantList.push(quadrant)
-            })  
+        this.quadrantList = []    
+        let quadrantRenderBuffer = quadrantData.filter(quadrantItem => this.checkArrayItem(this.currentRenderIndex, quadrantItem.index))
+        quadrantRenderBuffer.map((quadrantData) =>{
+            let quadrant = new Quadrant(this.context, quadrantData.content, this.player, quadrantData.index)
+            this.updateContent(quadrant.create())
+            this.quadrantList.push(quadrant)
         })
     }
 
     getCurrentQuadrant = () =>{
+        
         let currentQuadrant =  this.quadrantList.filter(quadrant =>{
             let condition1 = this.player.x + this.player.width >= (SCREEN_WIDTH * quadrant.quadrantIndex[1]) && 
                             this.player.x <= (SCREEN_WIDTH * quadrant.quadrantIndex[1]) + SCREEN_WIDTH  
@@ -151,24 +162,20 @@ class QuadrantController{
             return condition1 && condition2
         })[0]
         if(!currentQuadrant){
-            currentQuadrant = this.quadrantList.filter(quadrant => quadrant.index === this.currentIndex)
+            currentQuadrant = this.quadrantList.filter(quadrant => quadrant.quadrantIndex[0] === this.currentIndex[0] && quadrant.quadrantIndex[1] === this.currentIndex[1])[0]
         }
         return currentQuadrant
     }
 
-
     hasQuadrantChanged = () =>{
-        
-        let condition1 = this.player.x > (SCREEN_WIDTH * this.currentIndex[1]) + SCREEN_WIDTH + this.player.width
-        let condition2 = this.player.y > (SCREEN_HEIGHT * this.currentIndex[0]) + SCREEN_HEIGHT + this.player.height
+        let condition1 = (this.player.x > (SCREEN_WIDTH * this.currentIndex[1]) + SCREEN_WIDTH + this.player.width) || (this.player.x < (SCREEN_WIDTH * this.currentIndex[1]))
+        let condition2 = (this.player.y > (SCREEN_HEIGHT * this.currentIndex[0]) + SCREEN_HEIGHT + this.player.height) || (this.player.y < (SCREEN_HEIGHT * this.currentIndex[0]))
         
         if( condition1 || condition2){
             let currentQuadrant = this.getCurrentQuadrant()
             this.currentIndex = currentQuadrant.quadrantIndex
             return true
-            
         }
-
         return false
     }
 

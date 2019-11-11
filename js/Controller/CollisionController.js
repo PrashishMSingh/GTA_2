@@ -57,6 +57,9 @@ class CollisionController{
     // @ param item: an item with which the obj has collided
     // returns true if the user had collision and rearranges the user position
     checkCollision = (item, obj) =>{
+        if(!item){
+            console.log('undefined')
+        }
         let rightCollision = obj.x + obj.width > item.x
         let leftCollision = obj.x < item.x + item.width
         let topCollision = obj.y + obj.height > item.y

@@ -40,6 +40,7 @@ getMoveDirection = (buffer) =>{
     if(buffer.includes(40)){
         if(degree){
             degree += 90
+            degree /= 2
         }
         else{
             degree = 90

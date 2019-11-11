@@ -367,18 +367,6 @@ class Person extends Model{
                     if(this.friction > 0){
                         this.friction -= 0.03
                     }
-                    let maxScreenWidth = SCREEN_WIDTH * 2
-                    let maxScreenHeight = SCREEN_HEIGHT * 2
-                    if(this.x < 0){
-                        this.x = 0
-                    }if(this.y < 0){
-                        this.y = 0
-                    }
-                    if(this.x > maxScreenWidth){
-                        this.x = maxScreenWidth
-                    }if(this.y > maxScreenHeight){
-                        this.y = maxScreenHeight
-                    }
                     this.movePerson(degree, updateObjPath)
                 }else{
                     this.onMove = false;

@@ -6,9 +6,15 @@ class MovingObjController{
         this.left = left
         this.top = top
         this.context = context
+        this.quadrantIndex = [0, 0]
     }
 
 
+    // returns an index from which the pedesterian shall be generated
+    // 0 : generate at the left side of the enviroment
+    // 1 : generate at the top side of the enviroment
+    // 2 : generate at the right side of the enviroment
+    // 3 : generate at the bottom side of the enviroment
     checkPathSide= (path, top, left) =>{
         let endLeftSides = Math.abs(left)
         let endTopSides = Math.abs(top)
@@ -33,12 +39,15 @@ class MovingObjController{
         return['left', 'top', 'right', 'down'][index]
     }
 
+    // gets available path to generate the pedesterian 
+    //  and generate the pedesterian randomly on the random path
+    // @ param type : if the obj is a pedesterian or a car
+    // @ param top : top shift of the canvas
+    // @ param left : left shift of the canvas
     getObjectsSpawnPath = (type, top, left) =>{
-        let index = this.quadrantController.getCurrentQuadrant().quadrantIndex
-        let quadrantDataList = this.quadrantController.quadrantDataList[index[0]][index[1]]
-
-        let spawnedIndex;
-
+        let currentQuadrant = this.quadrantController.getCurrentQuadrant()       
+        let quadrantDataList = currentQuadrant.data
+        
         let selectedPath = []
         let bottomSides = []
         let leftSides  = []
@@ -46,7 +55,6 @@ class MovingObjController{
         let topSides = []
 
         let pathSideList = [leftSides, topSides, rightSides, bottomSides]
-        
         if(type === 'pedesterian'){
             quadrantDataList.path.map(path => {
                 if(!path.isRoad){
@@ -65,7 +73,9 @@ class MovingObjController{
                     }
                 }                
             })
-        }        
+        }       
+        
+        let spawnedIndex;
         spawnedIndex = Math.round(Math.random() * pathSideList.length)
         if(pathSideList[spawnedIndex]){
             selectedPath = pathSideList[spawnedIndex]
@@ -74,6 +84,18 @@ class MovingObjController{
         return { spawnPath : selectedPath[pathIndex], side : this.spawnedAt(spawnedIndex)}
     }
 
+    isPlayerNearby = (police, range) =>{
+        let playerCords = this.getMidPoint(this.player)
+        let policeCords = this.getMidPoint(police)
+        let nearBy = this.isNearBy(playerCords, policeCords, police.width * range)
+        police.onPursuite = nearBy
+        if(nearBy){
+            return true
+        }
+        return false
+    }
+
+    // direction where the spawned object shall move
     getMoveDir = (spawnSide) =>{
         return{
             top : 180,
@@ -83,6 +105,7 @@ class MovingObjController{
         }[spawnSide]
     }
 
+    // check if the spawned obj's are inside the render zone
     isInsideRenderZone = (obj, top, left) =>{
         let condition1 =obj.x > Math.abs(left) + SCREEN_WIDTH * 2
         let condition2 =obj.y > Math.abs(top) + SCREEN_HEIGHT * 2
@@ -95,6 +118,9 @@ class MovingObjController{
         return true
     }
 
+    // returns a midpoint from where the range of the police is measured
+    // range is used to detect nearby player with pursuit star 
+    // @param obj: item (police or police vehicle) whose middle point needs to be calculated
     getMidPoint =(obj) =>{
         return {
             x : obj.x + obj.width/2,
@@ -102,6 +128,8 @@ class MovingObjController{
         }
     }
 
+    // check if item 1 is close to item 2
+    // @param radius: range to measure close by
     isNearBy = (item1, item2, radius) =>{
           var xDiff = ((item1.x) - (item2.x))**2
           var yDiff = ((item1.y) - (item2.y))**2
@@ -111,6 +139,7 @@ class MovingObjController{
           return false;
     }
 
+    // returns path of the player or pedesterian at where they stand
     getObjPath = (obj) =>{
         let currentPath =this.quadrantController.content.path.filter(pathItem => {
             return this.collisionController.checkCollision(pathItem, obj)
@@ -118,6 +147,7 @@ class MovingObjController{
         return currentPath
     }
 
+    // changes move direction of the obj based of obj move degree and collision place
     changeDirection = (obj) =>{
         let currentPath = obj.currentPath
 
@@ -187,13 +217,14 @@ class MovingObjController{
         }
     }
 
+    // check next path the player is about to move to and assign the path to the player
     updateObjPath =(obj) =>{
         if(obj.currentPath){
 
             let nextPath = this.quadrantController.content.path[obj.currentPath.id + 1]
-
+            
             let currentPath;
-            if(this.collisionController.checkCollision(nextPath, obj)){
+            if(nextPath && this.collisionController.checkCollision(nextPath, obj)){
                 currentPath = nextPath
             }else{
                 currentPath = this.getObjPath(obj, this.quadrantController.content)
@@ -212,6 +243,8 @@ class MovingObjController{
         }
     }
 
+    //  returns a direction degree where the obj shall move 
+    // upon encountering left or right junction
     getObjDirection = (path, currentDirection) =>{
         let direction = currentDirection
         if(path.isRightJunction){

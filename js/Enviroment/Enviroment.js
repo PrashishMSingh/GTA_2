@@ -58,6 +58,21 @@ class Environment{
         this.uiController.showPursuitStar()
     }
 
+    updateEnvBoundry = () =>{
+        let maxScreenWidth = this.canvas.width
+        let maxScreenHeight = this.canvas.height
+        if(this.player.x < 0){
+            this.player.x = 0
+        }if(this.player.y < 0){
+            this.player.y = 0
+        }
+        if(this.player.x > maxScreenWidth){
+            this.player.x = maxScreenWidth
+        }if(this.player.y > maxScreenHeight){
+            this.player.y = maxScreenHeight
+        }
+    }
+
     initiateEventListener = () =>{    
         window.addEventListener('keydown', (e)=>{        
             e.preventDefault()    
@@ -123,6 +138,7 @@ class Environment{
         }
         this.updateObjAction()
         this.updateEnviroment()                
+        this.updateEnvBoundry()
 
         this.move()
         this.draw()
@@ -155,7 +171,6 @@ class Environment{
     updateEnviroment = () =>{
         let requireUpdate = this.quadrantController.hasQuadrantChanged()
         if(requireUpdate){
-            console.log('require update')
             this.quadrantController.renderQuadrants(this.setCanvasSize)
         }
     }  
@@ -165,25 +180,33 @@ class Environment{
         let obj = this.player
         let screenShiftSpeed = Math.abs(obj.velocity * (1 - obj.friction))
         
+        
         if(this.playersCar){
             obj = this.playersCar
             screenShiftSpeed = Math.abs(obj.velocity * (1 - obj.friction))* 2
         }
 
-        if(obj.x + this.left > SCREEN_WIDTH/2 && -this.left < this.canvas.width - SCREEN_WIDTH){
-            this.left -= screenShiftSpeed
-        }
-        if(obj.y + this.top> SCREEN_HEIGHT/2 && -this.top < this.canvas.height - SCREEN_HEIGHT){
-            this.top  -= screenShiftSpeed
+        let condition1 = obj.x < (SCREEN_WIDTH * (environmentData.colCount)) - SCREEN_WIDTH / 2
+        let condition2 = obj.y < (SCREEN_HEIGHT * (environmentData.rowCount)) - SCREEN_HEIGHT / 2
+
+        if(condition1 && condition2){
+            if(obj.x + this.left > SCREEN_WIDTH/2 && -this.left < this.canvas.width - SCREEN_WIDTH){
+                this.left -= screenShiftSpeed
+            }
+            if(obj.y + this.top> SCREEN_HEIGHT/2 && -this.top < this.canvas.height - SCREEN_HEIGHT){
+                this.top  -= screenShiftSpeed
+            }
+    
+            if(obj.y + this.top < SCREEN_HEIGHT/2 && -this.top > 0){
+                this.top  += screenShiftSpeed  
+            }
+    
+            if(obj.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
+                this.left  += screenShiftSpeed
+            }    
         }
 
-        if(obj.y + this.top < SCREEN_HEIGHT/2 && -this.top > 0){
-            this.top  += screenShiftSpeed  
-        }
-
-        if(obj.x + this.left < SCREEN_HEIGHT/2 && - this.left > 0){
-            this.left  += screenShiftSpeed
-        }    
+        
         this.pedesterianController.generatePedesterian(this.top, this.left, this.getItemCount, this.addToContent)
         this.carController.generatePedesterianCar(this.top, this.left, this.getItemCount, this.addToContent)
     }

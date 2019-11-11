@@ -60,17 +60,6 @@ class PedesterianController extends MovingObjController{
         })[0]
         return person
     }
-    
-    isPlayerNearby = (police, range) =>{
-        let playerCords = this.getMidPoint(this.player)
-        let policeCords = this.getMidPoint(police)
-        let nearBy = this.isNearBy(playerCords, policeCords, police.width * range)
-        police.onPursuite = nearBy
-        if(nearBy){
-            return true
-        }
-        return false
-    }
 
     updatePedesterianMove = (top, left) =>{
         this.quadrantController.content.pedesterian.map((pedesterian, index) =>{
