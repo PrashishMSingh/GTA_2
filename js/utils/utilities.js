@@ -143,6 +143,7 @@ getSprite=(x, y, width, height, item)=>{
 
         'roadVR_RJ' : {sx : 60 *1 + 10 , sy :60 * 27 - 5, sw : 58, sh:48, dx : x, dy:y, dw : width, dh : height},
         'roadHR_LJ' : {sx : 60 *1 + 10 , sy :60 * 27 - 5, sw : 58, sh:48, dx : x, dy:y, dw : width, dh : height},
+        'roadHR_RJ' : {sx : 60 *1 + 10 , sy :60 * 27 - 5, sw : 58, sh:48, dx : x, dy:y, dw : width, dh : height},
 
         'footPathVL' : {sx : 60 * 15 - 10, sy : 60 * 31, sw : 55, sh:60, dx : x, dy:y, dw : width, dh : height},
         'footPathVR' : {sx : 60 * 14 + 2, sy : 60 * 31, sw : 55, sh:60, dx : x, dy:y, dw : width, dh : height},

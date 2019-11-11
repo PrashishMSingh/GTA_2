@@ -57,15 +57,12 @@ class CollisionController{
     // @ param item: an item with which the obj has collided
     // returns true if the user had collision and rearranges the user position
     checkCollision = (item, obj) =>{
-        if(!item){
-            console.log('undefined')
-        }
         let rightCollision = obj.x + obj.width > item.x
         let leftCollision = obj.x < item.x + item.width
         let topCollision = obj.y + obj.height > item.y
         let bottomCollision = obj.y <  item.y + item.height
         
-        if(rightCollision && leftCollision && topCollision && bottomCollision){
+        if(rightCollision && leftCollision && topCollision && bottomCollision){            
             if(obj instanceof Person && item instanceof Car){
                 if(!obj.isPlayer && item.onMove){
                     this.objectItemCollision(item, obj)   
@@ -84,8 +81,18 @@ class CollisionController{
                     }
                 }
                 else{
+                    if(obj instanceof Car && !obj.isPlayerCar){
+                        obj.direction += Math.random() > 0.5 ? 90 : -90
+                    }
+                    
                     this.updateCollidedPlace(item, obj)                
                 }
+            }
+            if(obj instanceof Car && !obj.isPlayerCar){
+                if(item instanceof Path && !item.isRoad){
+                    this.updateCollidedPlace(item, obj)                
+                }
+                
             }
             return true
         }
@@ -164,7 +171,7 @@ class CollisionController{
     // upon collision with other moving object changes the direction for a duration and 
     // returns back to original direction
     changeObjectDirection = (obj, item, collisiontType) =>{
-        if(obj instanceof Person){
+        if(obj instanceof Person || obj instanceof Car){
             if(!obj.isPlayer || !obj.isPlayerCar){
                 let direction = obj.direction
                 if(collisiontType == 'horizontal'){
